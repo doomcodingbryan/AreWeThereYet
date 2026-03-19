@@ -5,7 +5,7 @@ from flask import Flask
 
 load_dotenv()
 from flask_cors import CORS
-from models import db, Episode, Review
+from models import db, Post, Country
 from routes import register_routes
 
 # src/ directory and project root (one level up)
@@ -28,34 +28,54 @@ db.init_app(app)
 # Register routes
 register_routes(app)
 
-# Function to initialize database, change this to your own database initialization logic
 def init_db():
     with app.app_context():
-        # Create all tables
         db.create_all()
-        
-        # Initialize database with data from init.json if empty
-        if Episode.query.count() == 0:
-            json_file_path = os.path.join(current_directory, 'init.json')
-            with open(json_file_path, 'r') as file:
+
+        if Post.query.count() == 0:
+            json_file_path = os.path.join(project_root, 'data', 'reddit_sample.json')
+
+            with open(json_file_path, 'r', encoding='utf-8') as file:
                 data = json.load(file)
-                for episode_data in data['episodes']:
-                    episode = Episode(
-                        id=episode_data['id'],
-                        title=episode_data['title'],
-                        descr=episode_data['descr']
+
+                # Cache countries to avoid repeated DB hits
+                country_cache = {
+                    c.name: c for c in Country.query.all()
+                }
+
+                for post_id, post_data in data.items():
+                    post = Post(
+                        id=post_id,
+                        subreddit=post_data.get('subreddit'),
+                        title=post_data.get('title', ''),
+                        body=post_data.get('body'),
+                        full_text=post_data.get('full_text'),
+                        score=post_data.get('score'),
+                        upvote_ratio=post_data.get('upvote_ratio'),
+                        num_comments=post_data.get('num_comments'),
+                        created_utc=post_data.get('created_utc'),
+                        url=post_data.get('url'),
+                        flair=post_data.get('flair'),
+                        num_countries=post_data.get('num_countries'),
+                        body_length=post_data.get('body_length'),
+                        has_country=(post_data.get('has_country') == "True")
                     )
-                    db.session.add(episode)
-                
-                for review_data in data['reviews']:
-                    review = Review(
-                        id=review_data['id'],
-                        imdb_rating=review_data['imdb_rating']
-                    )
-                    db.session.add(review)
-            
+
+                    # Handle countries (many-to-many)
+                    for country_name in post_data.get('countries', []):
+                        if country_name in country_cache:
+                            country = country_cache[country_name]
+                        else:
+                            country = Country(name=country_name)
+                            db.session.add(country)
+                            country_cache[country_name] = country
+
+                        post.countries.append(country)
+
+                    db.session.add(post)
+
             db.session.commit()
-            print("Database initialized with episodes and reviews data")
+            print("Database initialized with normalized countries")
 
 init_db()
 
