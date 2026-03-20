@@ -37,7 +37,7 @@ def json_search(query):
     return matches
 
 
-def register_routes(app):
+def register_routes(app, search_engine=None):
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve(path):
@@ -54,6 +54,22 @@ def register_routes(app):
     def posts_search():
         text = request.args.get("q", "")
         return jsonify(json_search(text))
+
+    @app.route("/api/recommend", methods=["POST"])
+    def recommend():
+        """Rank countries by TF-IDF cosine similarity to a vibe query."""
+        if search_engine is None:
+            return jsonify({"error": "Search engine not initialized"}), 503
+
+        data = request.get_json(silent=True) or {}
+        query = data.get("query", "").strip()
+        top_k = data.get("top_k", 10)
+
+        if not query:
+            return jsonify({"error": "query is required"}), 400
+
+        results = search_engine.search(query, top_k=top_k)
+        return jsonify({"query": query, "results": results})
 
     if USE_LLM:
         from llm_routes import register_chat_route

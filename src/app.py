@@ -7,6 +7,7 @@ load_dotenv()
 from flask_cors import CORS
 from models import db, Post, Country
 from routes import register_routes
+from search_engine import CountrySearchEngine
 
 # src/ directory and project root (one level up)
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -25,8 +26,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize database with app
 db.init_app(app)
 
-# Register routes
-register_routes(app)
+# Initialize TF-IDF search engine
+engine = CountrySearchEngine()
+engine.build_index()
+
+# Register routes (pass engine so /api/recommend can use it)
+register_routes(app, search_engine=engine)
 
 def init_db():
     with app.app_context():
