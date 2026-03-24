@@ -55,7 +55,7 @@ class CountrySearchEngine:
         self.vectorizer = TfidfVectorizer(
             stop_words="english",
             max_df=0.85,
-            min_df=2,
+            min_df=1,
             max_features=10000,
             ngram_range=(1, 2),
             sublinear_tf=True,
@@ -101,7 +101,7 @@ class CountrySearchEngine:
 
             results.append({
                 "country": country,
-                "score": round(score, 4),
+                "score": score,
                 "metadata": {
                     "region": meta.get("region", ""),
                     "quality_of_life_index": meta.get("quality_of_life_index", ""),
@@ -116,5 +116,12 @@ class CountrySearchEngine:
                     "visa_name": meta.get("visa_name", ""),
                 }
             })
+
+        # Normalize scores relative to the best match so percentages are meaningful
+        if results:
+            max_score = results[0]["score"]
+            if max_score > 0:
+                for r in results:
+                    r["score"] = round(r["score"] / max_score, 4)
 
         return results
