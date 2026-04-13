@@ -1,5 +1,5 @@
 """
-Routes: React app serving and episode search API.
+Routes for static app serving and country recommendation/search APIs.
 
 To enable AI chat, set USE_LLM = True below. See llm_routes.py for AI code.
 """

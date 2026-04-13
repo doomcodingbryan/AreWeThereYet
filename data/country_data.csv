@@ -1,124 +1,137 @@
 country,ef_epi_score,ef_epi_band,quality_of_life_index,purchasing_power_index,safety_index,health_care_index,cost_of_living_index,pollution_index,climate_index,official_languages,english_official,region,population,currency,gdp_per_capita_usd,skilled_worker_visa,visa_name,passport_visa_free_count
-Netherlands,624,Very High,213.6,136.6,74.5,81.5,73.4,20.9,86.9,Dutch,False,Europe,18100436,"euro (EUR, €)",67520.42,yes,Highly Skilled Migrant Programme (HSMP),37.0
-Croatia,617,Very High,176.6,88.7,75.7,65.1,52.4,31.8,87.1,Croatian,False,Europe,3866233,"euro (EUR, €)",24050.44,yes,Temporary Stay for Work (EU Blue Card),37.0
-Austria,616,Very High,199.8,123.2,71.5,78.9,71.3,20.4,76.6,English,True,Oceania,27536874,"Australian dollar (AUD, $)",64603.99,yes,Red-White-Red Card,8.0
-Germany,615,Very High,196.3,142.0,61.6,72.4,68.7,28.2,82.9,German,False,Europe,83491249,"euro (EUR, €)",56103.73,yes,Skilled Immigration Act (Fachkräfteeinwanderungsgesetz),39.0
-Norway,613,Very High,195.4,128.0,66.7,75.8,83.7,19.0,70.6,"Norwegian Bokmål, Norwegian Nynorsk, Sami",False,Europe,5606944,"Norwegian krone (NOK, kr)",86785.43,yes,Skilled Workers Residence Permit,37.0
-Portugal,612,Very High,169.5,68.7,67.0,72.0,48.8,29.9,97.8,Portuguese,False,Europe,10749635,"euro (EUR, €)",29292.24,yes,D3 Highly Qualified Activity Visa,37.0
-Denmark,611,Very High,212.2,150.6,73.8,77.2,78.9,22.7,81.2,Danish,False,Europe,6011488,"Danish krone (DKK, kr)",71026.48,yes,Pay Limit / Fast-Track Scheme,37.0
-Sweden,609,Very High,189.3,136.9,52.1,68.3,68.0,17.6,65.0,Swedish,False,Europe,10605098,"Swedish krona (SEK, kr)",57117.49,yes,Work Permit for Highly Qualified Workers,37.0
-Belgium,608,Very High,175.2,127.5,50.8,76.4,68.6,46.8,86.5,"Dutch, French, German",False,Europe,11825551,"euro (EUR, €)",56614.57,yes,Single Permit / European Blue Card,37.0
-Slovakia,606,Very High,181.5,89.9,75.5,66.2,54.1,22.7,80.6,Slovene,False,Europe,2130638,"euro (EUR, €)",34301.03,yes,Blue Card / Temporary Residence for Employment,37.0
-Romania,605,Very High,143.0,78.6,67.2,56.5,40.6,58.4,76.3,Romanian,False,Europe,19036031,"Romanian leu (RON, lei)",20080.21,yes,Long-Stay Visa for Employment,37.0
-Finland,603,Very High,204.4,132.6,73.5,77.6,69.0,11.8,54.4,"Finnish, Swedish",False,Europe,5650325,"euro (EUR, €)",53149.77,yes,Residence Permit for Employed Persons,37.0
-South Africa,602,Very High,150.9,112.0,25.5,64.0,37.1,56.9,95.7,"Afrikaans, English, Northern Sotho, Southern Ndebele, Southern Sotho, Swazi, Tsonga, Tswana, Venda, Xhosa, Zulu",True,Africa,63100945,"South African rand (ZAR, R)",2690.08,yes,Critical Skills Work Visa,6.0
-Zimbabwe,602,Very High,,,,,,,,"Chewa, Chibarwe, English, Kalanga, Khoisan, Ndau, Northern Ndebele, Shona, Sotho, Tonga, Tsonga, Tswana, Venda, Xhosa, Zimbabwean Sign Language",True,Africa,17073087,"Zimbabwean dollar (ZWL, $)",2497.2,,,5.0
-Poland,600,Very High,156.1,99.8,71.3,57.9,47.3,55.5,75.7,Polish,False,Europe,37392000,"Polish złoty (PLN, zł)",25103.57,yes,Temporary Residence for Highly Qualified Workers,37.0
-Latvia,598,High,167.3,79.1,63.7,63.6,52.3,29.1,76.8,Latvian,False,Europe,1829000,"euro (EUR, €)",23409.08,yes,Residence Permit for Highly Qualified Employees,37.0
-North Macedonia,595,High,124.2,66.1,58.6,55.4,35.5,79.2,79.9,Macedonian,False,Europe,1822612,"denar (MKD, den)",9291.86,,,3.0
-Bulgaria,594,High,148.3,85.9,64.5,58.3,41.6,62.6,81.2,Bulgarian,False,Europe,6437360,"Bulgarian lev (BGN, лв)",17596.02,yes,Residence Permit for Employment (Blue Card),37.0
-Kenya,593,High,99.4,36.7,44.9,62.2,28.9,69.0,87.1,"English, Swahili",True,Africa,53330978,"Kenyan shilling (KES, Sh)",2132.43,yes,Work Permit Class G,4.0
-Greece,592,High,140.8,65.4,53.8,58.9,54.0,49.2,93.0,Greek,False,Europe,10400720,"euro (EUR, €)",24626.15,yes,Digital Nomad Visa,37.0
-Bosnia and Herzegovina,591,High,136.5,68.1,58.7,54.6,38.7,59.9,82.9,"Bosnian, Croatian, Serbian",False,Europe,3422000,"Bosnia and Herzegovina convertible mark (BAM, KM)",9358.79,,,3.0
-Hungary,590,High,147.6,80.3,66.5,54.2,46.9,46.2,79.8,Hungarian,False,Europe,9539502,"Hungarian forint (HUF, Ft)",23292.33,yes,White Card (White-Card Scheme),37.0
-Czechia,582,High,175.3,94.0,73.6,76.0,53.0,33.7,77.7,"Czech, Slovak",False,Europe,10882341,"Czech koruna (CZK, Kč)",31823.31,yes,Employee Card / Blue Card,37.0
-Malaysia,581,High,135.2,81.8,52.0,70.7,34.0,60.6,58.1,"English, Malay",True,Asia,34231700,"Malaysian ringgit (MYR, RM)",11874.43,yes,Employment Pass,5.0
-Serbia,578,High,127.6,64.7,63.0,52.1,42.6,65.8,82.7,Serbian,False,Europe,6567783,"Serbian dinar (RSD, дин.)",13679.21,yes,Temporary Residence Permit for Employment,2.0
-Argentina,575,High,123.4,48.6,36.8,67.8,41.3,50.4,95.4,"Guaraní, Spanish",False,Americas,46735004,"Argentine peso (ARS, $)",13969.78,yes,Temporary Residence for Employment,2.0
-Zambia,573,High,,,,,,,,English,True,Africa,2422712,"dalasi (GMD, D)",4413.13,,,15.0
-Philippines,569,High,87.1,34.6,56.5,66.8,30.1,72.5,68.4,"English, Filipino",True,Asia,114123600,"Philippine peso (PHP, ₱)",3984.83,yes,Alien Employment Permit (AEP),2.0
-Nigeria,568,High,0.0,8.7,33.8,48.3,27.7,87.1,70.7,English,True,Africa,223800000,"Nigerian naira (NGN, ₦)",735.27,,,11.0
-Switzerland,564,High,206.2,176.1,72.6,71.2,110.7,24.3,80.7,"French, Italian, Romansh, Swiss German",False,Europe,9082848,"Swiss franc (CHF, Fr.)",103998.19,yes,Residence Permit B (Skilled Non-EU),36.0
-Estonia,561,High,190.7,90.3,76.8,75.2,59.7,16.1,71.2,Estonian,False,Europe,1369995,"euro (EUR, €)",31428.35,yes,Digital Nomad Visa / Work Permit,38.0
-Honduras,553,High,,,,,,,,Spanish,False,Americas,9892632,"Honduran lempira (HNL, L)",3426.43,,,3.0
-Lithuania,543,Moderate,178.2,89.7,66.8,75.4,51.2,25.2,69.9,Lithuanian,False,Europe,2894886,"euro (EUR, €)",29384.02,yes,Work Permit / Blue Card,37.0
-Uruguay,542,Moderate,139.1,56.3,47.5,68.5,55.6,42.8,98.3,Spanish,False,Americas,3499451,"Uruguayan peso (UYU, $)",23906.51,yes,Temporary Residence (Residencia Temporaria),4.0
-Georgia,541,Moderate,126.6,44.2,73.8,56.3,33.1,67.8,88.5,Georgian,False,Asia,4000921,"lari (GEL, ₾)",9241.49,yes,No work permit required (visa-free stay for work),7.0
-Spain,540,Moderate,185.8,108.0,62.4,77.2,51.6,35.3,92.8,"Basque, Catalan, Galician, Spanish",False,Europe,49315949,"euro (EUR, €)",35326.77,yes,Digital Nomad / Startup Visa,37.0
-Ghana,540,Moderate,,,,,,,,English,True,Africa,33742380,"Ghanaian cedi (GHS, ₵)",2390.77,,,13.0
-France,539,Moderate,169.8,121.5,44.2,77.0,67.7,43.5,89.6,French,False,Europe,66351959,"euro (EUR, €)",46103.08,yes,Talent Passport (Passeport Talent),37.0
-Hong Kong,538,Moderate,,,,,,,,"Chinese, English",True,Asia,7527500,"Hong Kong dollar (HKD, $)",54074.69,yes,Quality Migrant Admission Scheme (QMAS),6.0
-Cyprus,537,Moderate,159.6,90.5,66.7,56.7,58.8,55.3,92.3,"Greek, Turkish",False,Europe,1442614,"euro (EUR, €)",38674.29,yes,Employment Permit for Third-Country Nationals,38.0
-Belarus,533,Moderate,135.7,65.5,51.5,49.6,30.5,44.2,68.5,"Belarusian, Russian",False,Europe,9109280,"Belarusian ruble (BYN, Br)",8317.63,,,6.0
-Albania,532,Moderate,105.6,46.7,55.9,48.1,45.8,77.1,86.3,Albanian,False,Europe,2363314,"Albanian lek (ALL, L)",11377.78,,,2.0
-Moldova,531,Moderate,,,,,,,,Romanian,False,Europe,2749076,"Moldovan leu (MDL, L)",7576.2,,,9.0
-Paraguay,531,Moderate,,,,,,,,"Guaraní, Spanish",False,Americas,6109644,"Paraguayan guaraní (PYG, ₲)",6416.1,,,2.0
-Ukraine,526,Moderate,117.1,51.1,53.1,55.8,28.2,62.2,71.3,Ukrainian,False,Europe,32862000,"Ukrainian hryvnia (UAH, ₴)",5389.47,yes,Temporary Residence for Work,5.0
-Israel,524,Moderate,167.7,123.1,68.2,73.4,79.7,56.5,93.8,"Arabic, Hebrew",False,Asia,10134800,"Israeli new shekel (ILS, ₪)",54176.68,yes,Expert Work Visa (B/1),2.0
-El Salvador,523,Moderate,,,,,,,,Spanish,False,Americas,6029976,"United States dollar (USD, $)",5579.66,,,2.0
-South Korea,522,Moderate,150.4,113.8,71.0,82.9,61.6,56.6,71.9,Korean,False,Asia,25950000,"North Korean won (KPW, ₩)",36238.64,yes,E-7 Specially Designated Activities Visa,2.0
-Bolivia,521,Moderate,,,,,,,,"Aymara, Guaraní, Quechua, Spanish",False,Americas,11365333,"Bolivian boliviano (BOB, Bs.)",4421.17,,,2.0
-Russia,521,Moderate,115.6,63.2,61.8,61.6,36.5,58.4,38.0,Russian,False,Europe,146028325,"Russian ruble (RUB, ₽)",14889.02,,,6.0
-Venezuela,520,Moderate,75.2,17.7,19.6,39.9,37.7,73.6,79.9,Spanish,False,Americas,28517000,"Venezuelan bolívar soberano (VES, Bs.S.)",4217.59,,,1.0
-Peru,519,Moderate,92.3,49.7,33.1,56.9,33.5,81.9,93.3,"Aymara, Quechua, Spanish",False,Americas,34350244,"Peruvian sol (PEN, S/ )",8452.37,,,2.0
-Uganda,518,Moderate,,,,,,,,"English, Swahili",True,Africa,45905417,"Ugandan shilling (UGX, Sh)",1077.91,,,5.0
-Chile,517,Moderate,109.8,54.0,39.3,63.6,39.0,77.3,95.6,Spanish,False,Americas,20206953,"Chilean peso (CLP, $)",16709.89,yes,Work Visa (Visa Temporaria),2.0
-Costa Rica,516,Moderate,127.3,50.9,46.1,64.8,52.9,41.4,93.1,Spanish,False,Americas,5309625,"Costa Rican colón (CRC, ₡)",18587.15,,,2.0
-Armenia,515,Moderate,121.9,42.5,77.9,59.5,40.9,61.3,63.4,Armenian,False,Asia,3076200,"Armenian dram (AMD, ֏)",8556.21,,,5.0
-Cuba,515,Moderate,,,,,,,,Spanish,False,Americas,9748007,"Cuban convertible peso (CUC, $); Cuban peso (CUP, $)",,,,4.0
-Nepal,514,Moderate,,,,,,,,Nepali,False,Asia,29911840,"Nepalese rupee (NPR, ₨)",1447.31,,,2.0
-Italy,513,Moderate,152.9,91.4,52.7,64.9,61.4,53.1,89.8,"Catalan, Italian",False,Europe,58927633,"euro (EUR, €)",40385.34,yes,Nulla Osta / Decreto Flussi,37.0
-Nicaragua,512,Moderate,,,,,,,,Spanish,False,Americas,6803886,"Nicaraguan córdoba (NIO, C$)",2847.54,,,2.0
-Guatemala,510,Moderate,,,,,,,,Spanish,False,Americas,18079810,"Guatemalan quetzal (GTQ, Q)",6150.03,,,2.0
-Bangladesh,506,Moderate,73.3,35.0,38.4,42.0,22.8,85.4,72.9,Bengali,False,Asia,169828911,"Bangladeshi taka (BDT, ৳)",2593.42,,,2.0
-Dominican Republic,503,Moderate,,,,,,,,Spanish,False,Americas,10771504,"Dominican peso (DOP, $)",10875.66,,,1.0
-Vietnam,500,Moderate,92.5,43.7,59.9,62.2,26.4,83.7,71.1,Vietnamese,False,Asia,101343800,"Vietnamese đồng (VND, ₫)",4717.29,yes,Work Permit / Temporary Residence Card,1.0
-Ethiopia,499,Low,,,,,,,,Amharic,False,Africa,111652998,"Ethiopian birr (ETB, Br)",1133.88,,,
-Tunisia,498,Low,117.6,36.3,55.1,56.6,29.1,69.5,94.3,Arabic,False,Africa,11972169,"Tunisian dinar (TND, د.ت)",4181.14,,,6.0
-Pakistan,493,Low,98.3,29.9,57.6,59.5,19.6,73.3,67.1,"English, Urdu",True,Asia,241499431,"Pakistani rupee (PKR, ₨)",1478.77,,,1.0
-Iran,492,Low,88.0,31.1,49.2,52.8,22.8,75.2,69.0,Persian (Farsi),False,Asia,85961000,"Iranian rial (IRR, ﷼)",5190.17,,,
-Morocco,492,Low,114.1,46.5,53.0,46.8,31.4,68.6,90.3,"Arabic, Berber",False,Africa,36828330,"Moroccan dirham (MAD, د.م.)",4153.19,yes,Work Authorization (Autorisation de Travail),5.0
-Panama,491,Low,120.4,45.7,57.2,61.2,45.5,55.9,68.2,Spanish,False,Americas,4064780,"Panamanian balboa (PAB, B/.); United States dollar (USD, $)",19161.22,,,2.0
-Turkey,488,Low,142.1,74.7,58.5,71.3,39.2,63.9,90.0,Turkish,False,Asia,85664944,"Turkish lira (TRY, ₺)",15892.72,yes,Work Permit / Turquoise Card,3.0
-United Arab Emirates,487,Low,175.5,131.9,86.0,70.8,55.2,48.3,43.4,Arabic,False,Asia,11294243,"United Arab Emirates dirham (AED, د.إ)",50273.51,yes,Golden Visa / Green Visa,12.0
-Sri Lanka,486,Low,61.0,19.3,57.6,70.7,33.9,58.0,64.1,"Sinhala, Tamil",False,Asia,21763170,"Sri Lankan rupee (LKR, Rs  රු)",4515.57,,,1.0
-India,484,Low,122.3,77.8,55.8,65.5,18.9,72.8,65.2,"English, Hindi, Tamil",True,Asia,1417492000,"Indian rupee (INR, ₹)",2694.74,yes,Employment Visa,4.0
-Brazil,482,Low,117.8,47.2,36.0,59.3,30.1,52.8,92.5,Portuguese,False,Americas,213421037,"Brazilian real (BRL, R$)",10310.55,yes,VITEM V Temporary Work Visa,3.0
-Colombia,480,Low,105.9,41.0,38.7,68.9,31.7,62.2,82.3,Spanish,False,Americas,53057212,"Colombian peso (COP, $)",7919.21,yes,Migrant Visa for Workers (M – Trabajador),3.0
-Tanzania,479,Low,,,,,,,,"English, Swahili",True,Africa,68153004,"Tanzanian shilling (TZS, Sh)",1186.72,,,5.0
-Lebanon,477,Low,98.2,38.4,53.1,63.7,41.7,89.3,94.7,"Arabic, French",False,Asia,5490000,"Lebanese pound (LBP, ل.ل)",,,,2.0
-Bhutan,473,Low,,,,,,,,Dzongkha,False,Asia,784043,"Bhutanese ngultrum (BTN, Nu.); Indian rupee (INR, ₹)",,,,2.0
-Indonesia,471,Low,91.1,30.0,53.6,61.2,26.1,68.0,66.5,Indonesian,False,Asia,284438782,"Indonesian rupiah (IDR, Rp)",4925.43,yes,Limited Stay Permit (KITAS) for Work,1.0
-Qatar,469,Low,182.7,160.3,84.8,73.6,50.4,60.0,36.0,Arabic,False,Asia,3173024,"Qatari riyal (QAR, ر.ق)",76688.69,yes,Permanent Residency for Skilled Workers,8.0
-Algeria,468,Low,,,,,,,,Arabic,False,Africa,47400000,"Algerian dinar (DZD, د.ج)",5752.99,,,4.0
-Ecuador,466,Low,128.7,49.5,38.1,77.7,30.9,59.0,94.5,Spanish,False,Americas,18103660,"United States dollar (USD, $)",6874.71,,,2.0
-Malawi,465,Low,,,,,,,,"Chewa, English",True,Africa,20734262,"Malawian kwacha (MWK, MK)",522.57,,,5.0
-Mozambique,465,Low,,,,,,,,Portuguese,False,Africa,34090466,"Mozambican metical (MZN, MT)",656.78,,,2.0
-China,464,Low,134.8,96.4,76.9,69.2,30.5,76.2,74.4,Chinese,False,Asia,1408280000,"Chinese yuan (CNY, ¥)",13303.15,yes,Work-Type Residence Permit (Z Visa),1.0
-Palestine,463,Low,,,,,,,,Arabic,False,Asia,5483450,"Egyptian pound (EGP, E£); Israeli new shekel (ILS, ₪); Jordanian dinar (JOD, JD)",,,,
-Laos,461,Low,,,,,,,,Lao,False,Asia,7647000,"Lao kip (LAK, ₭)",2123.98,,,1.0
-Egypt,458,Low,81.9,22.2,53.6,47.9,21.6,82.5,85.3,Arabic,False,Africa,107271260,"Egyptian pound (EGP, £)",,yes,Work Permit for Foreigners,2.0
-Madagascar,457,Low,,,,,,,,"French, Malagasy",False,Africa,31727042,"Malagasy ariary (MGA, Ar)",544.99,,,
-Syria,456,Low,,,,,,,,Arabic,False,Asia,25620000,"Syrian pound (SYP, £)",,,,1.0
-Turkmenistan,456,Low,,,,,,,,"Russian, Turkmen",False,Asia,7057841,"Turkmenistan manat (TMT, m)",6856.66,,,2.0
-Kuwait,455,Low,162.7,182.8,67.4,58.6,42.5,69.4,20.2,Arabic,False,Asia,4881254,"Kuwaiti dinar (KWD, د.ك)",32717.72,,,9.0
-Azerbaijan,454,Low,111.1,41.2,68.4,49.0,30.7,72.0,91.4,Azerbaijani,False,Asia,10241722,"Azerbaijani manat (AZN, ₼)",7283.85,,,6.0
-Mongolia,447,Very Low,,,,,,,,Mongolian,False,Asia,3544835,"Mongolian tögrög (MNT, ₮)",6750.63,,,1.0
 Afghanistan,446,Very Low,,,,,,,,"Dari, Pashto, Turkmen",False,Asia,43844000,"Afghan afghani (AFN, ؋)",,,,
-Japan,446,Very Low,185.6,121.1,77.2,80.1,47.5,37.8,83.8,Japanese,False,Asia,123210000,"Japanese yen (JPY, ¥)",32487.08,yes,Highly Skilled Professional Visa (HSP),2.0
-Cameroon,445,Very Low,,,,,,,,"English, French",True,Africa,29442327,"Central African CFA franc (XAF, Fr)",1830.01,,,
-Haiti,444,Very Low,,,,,,,,"French, Haitian Creole",False,Americas,11867032,"Haitian gourde (HTG, G)",2142.62,,,1.0
-Myanmar,444,Very Low,,,,,,,,Burmese,False,Asia,51316756,"Burmese kyat (MMK, Ks)",1359.05,,,
-Kyrgyzstan,443,Very Low,,,,,,,,"Kyrgyz, Russian",False,Asia,7281800,"Kyrgyzstani som (KGS, с)",2420.19,,,5.0
-Senegal,442,Very Low,,,,,,,,French,False,Africa,18593258,"West African CFA franc (XOF, Fr)",1773.22,,,12.0
-Mexico,440,Very Low,125.3,49.8,47.1,72.3,42.6,58.3,86.6,Spanish,False,Americas,130575786,"Mexican peso (MXN, $)",14185.78,yes,Temporary Resident Work Visa,2.0
-Uzbekistan,429,Very Low,,,,,,,,"Russian, Uzbek",False,Asia,37859698,"Uzbekistani soʻm (UZS, so'm)",3161.7,,,4.0
-Jordan,425,Very Low,125.6,55.2,60.3,65.6,39.4,77.1,91.2,Arabic,False,Asia,11734000,"Jordanian dinar (JOD, د.ا)",4618.1,,,1.0
-Sudan,421,Very Low,,,,,,,,"Arabic, English",True,Africa,51662000,"Sudanese pound (SDG, ج.س)",984.61,,,1.0
-Kazakhstan,417,Very Low,107.5,56.8,54.8,60.7,29.8,73.0,34.8,"Kazakh, Russian",False,Asia,20426568,"Kazakhstani tenge (KZT, ₸)",14154.63,yes,Work Permit for Highly Qualified Specialists,7.0
-Rwanda,417,Very Low,,,,,,,,"English, French, Kinyarwanda",True,Africa,14104969,"Rwandan franc (RWF, Fr)",999.65,,,4.0
+Albania,532,Moderate,105.6,46.7,55.9,48.1,45.8,77.1,86.3,Albanian,False,Europe,2363314,"Albanian lek (ALL, L)",11377.78,,,2.0
+Algeria,468,Low,,,,,,,,Arabic,False,Africa,47400000,"Algerian dinar (DZD, د.ج)",5752.99,,,4.0
 Angola,413,Very Low,,,,,,,,Portuguese,False,Africa,36170961,"Angolan kwanza (AOA, Kz)",2665.87,,,2.0
-Tajikistan,409,Very Low,,,,,,,,"Russian, Tajik",False,Asia,10499000,"Tajikistani somoni (TJS, ЅМ)",1341.2,,,3.0
-Mali,408,Very Low,,,,,,,,French,False,Africa,22395489,"West African CFA franc (XOF, Fr)",1094.62,,,11.0
-Oman,407,Very Low,207.6,156.3,81.6,63.5,43.6,36.5,71.3,Arabic,False,Asia,5343630,"Omani rial (OMR, ر.ع.)",20285.23,,,7.0
+Argentina,575,High,123.4,48.6,36.8,67.8,41.3,50.4,95.4,"Guaraní, Spanish",False,Americas,46735004,"Argentine peso (ARS, $)",13969.78,yes,Temporary Residence for Employment,2.0
+Armenia,515,Moderate,121.9,42.5,77.9,59.5,40.9,61.3,63.4,Armenian,False,Asia,3076200,"Armenian dram (AMD, ֏)",8556.21,,,5.0
+Australia,,,165.7,,53.3,71.4,75.4,,93.9,,,,,,,,,
+Austria,616,Very High,199.8,123.2,71.5,78.9,71.3,20.4,76.6,English,True,Oceania,27536874,"Australian dollar (AUD, $)",64603.99,yes,Red-White-Red Card,8.0
+Azerbaijan,454,Low,111.1,41.2,68.4,49.0,30.7,72.0,91.4,Azerbaijani,False,Asia,10241722,"Azerbaijani manat (AZN, ₼)",7283.85,,,6.0
+Bangladesh,506,Moderate,73.3,35.0,38.4,42.0,22.8,85.4,72.9,Bengali,False,Asia,169828911,"Bangladeshi taka (BDT, ৳)",2593.42,,,2.0
+Belarus,533,Moderate,135.7,65.5,51.5,49.6,30.5,44.2,68.5,"Belarusian, Russian",False,Europe,9109280,"Belarusian ruble (BYN, Br)",8317.63,,,6.0
+Belgium,608,Very High,175.2,127.5,50.8,76.4,68.6,46.8,86.5,"Dutch, French, German",False,Europe,11825551,"euro (EUR, €)",56614.57,yes,Single Permit / European Blue Card,37.0
 Benin,406,Very Low,,,,,,,,French,False,Africa,13224860,"West African CFA franc (XOF, Fr)",1485.38,,,10.0
-Iraq,406,Very Low,,,,,,,,"Arabic, Aramaic, Sorani",False,Asia,46118793,"Iraqi dinar (IQD, ع.د)",6073.61,,,
-Saudi Arabia,404,Very Low,165.3,136.0,76.7,62.2,43.9,61.7,38.6,Arabic,False,Asia,35300280,"Saudi riyal (SAR, ر.س)",35121.66,yes,Premium Residency / Iqama Work Permit,8.0
-Thailand,402,Very Low,106.8,46.7,63.4,77.5,38.0,75.6,68.0,Thai,False,Asia,65859640,"Thai baht (THB, ฿)",7346.62,yes,Non-Immigrant B Visa + Work Permit,2.0
-Yemen,402,Very Low,,,,,,,,Arabic,False,Asia,32684503,"Yemeni rial (YER, ﷼)",,,,2.0
-DR Congo,400,Very Low,,,,,,,,"French, Kikongo, Lingala, Swahili, Tshiluba",False,Africa,112832000,"Congolese franc (CDF, FC)",649.38,,,1.0
-Somalia,398,Very Low,,,,,,,,"Arabic, Somali",False,Africa,19655000,"Somali shilling (SOS, Sh)",,,,2.0
-Togo,397,Very Low,,,,,,,,French,False,Africa,8095498,"West African CFA franc (XOF, Fr)",1119.38,,,10.0
-Libya,395,Very Low,,,,,,,,Arabic,False,Africa,7459000,"Libyan dinar (LYD, ل.د)",6569.16,,,1.0
-Côte d'Ivoire,393,Very Low,,,,,,,,French,False,Africa,31719275,"West African CFA franc (XOF, Fr)",2727.89,,,10.0
+Bhutan,473,Low,,,,,,,,Dzongkha,False,Asia,784043,"Bhutanese ngultrum (BTN, Nu.); Indian rupee (INR, ₹)",,,,2.0
+Bolivia,521,Moderate,,,,,,,,"Aymara, Guaraní, Quechua, Spanish",False,Americas,11365333,"Bolivian boliviano (BOB, Bs.)",4421.17,,,2.0
+Bosnia and Herzegovina,591,High,136.5,68.1,58.7,54.6,38.7,59.9,82.9,"Bosnian, Croatian, Serbian",False,Europe,3422000,"Bosnia and Herzegovina convertible mark (BAM, KM)",9358.79,,,3.0
+Brazil,482,Low,117.8,47.2,36.0,59.3,30.1,52.8,92.5,Portuguese,False,Americas,213421037,"Brazilian real (BRL, R$)",10310.55,yes,VITEM V Temporary Work Visa,3.0
+Bulgaria,594,High,148.3,85.9,64.5,58.3,41.6,62.6,81.2,Bulgarian,False,Europe,6437360,"Bulgarian lev (BGN, лв)",17596.02,yes,Residence Permit for Employment (Blue Card),37.0
 Cambodia,390,Very Low,,,,,,,,Khmer,False,Asia,17577760,"Cambodian riel (KHR, ៛); United States dollar (USD, $)",2627.88,,,1.0
+Cameroon,445,Very Low,,,,,,,,"English, French",True,Africa,29442327,"Central African CFA franc (XAF, Fr)",1830.01,,,
+Canada,,,156.4,,55.2,69.7,68,,53.9,,,,,,,,,
+Chile,517,Moderate,109.8,54.0,39.3,63.6,39.0,77.3,95.6,Spanish,False,Americas,20206953,"Chilean peso (CLP, $)",16709.89,yes,Work Visa (Visa Temporaria),2.0
+China,464,Low,134.8,96.4,76.9,69.2,30.5,76.2,74.4,Chinese,False,Asia,1408280000,"Chinese yuan (CNY, ¥)",13303.15,yes,Work-Type Residence Permit (Z Visa),1.0
+Colombia,480,Low,105.9,41.0,38.7,68.9,31.7,62.2,82.3,Spanish,False,Americas,53057212,"Colombian peso (COP, $)",7919.21,yes,Migrant Visa for Workers (M – Trabajador),3.0
+Costa Rica,516,Moderate,127.3,50.9,46.1,64.8,52.9,41.4,93.1,Spanish,False,Americas,5309625,"Costa Rican colón (CRC, ₡)",18587.15,,,2.0
+Croatia,617,Very High,176.6,88.7,75.7,65.1,52.4,31.8,87.1,Croatian,False,Europe,3866233,"euro (EUR, €)",24050.44,yes,Temporary Stay for Work (EU Blue Card),37.0
+Cuba,515,Moderate,,,,,,,,Spanish,False,Americas,9748007,"Cuban convertible peso (CUC, $); Cuban peso (CUP, $)",,,,4.0
+Cyprus,537,Moderate,159.6,90.5,66.7,56.7,58.8,55.3,92.3,"Greek, Turkish",False,Europe,1442614,"euro (EUR, €)",38674.29,yes,Employment Permit for Third-Country Nationals,38.0
+Czech Republic,,,162.3,,73.2,75.2,52.8,,78,,,,,,,,,
+Czechia,582,High,175.3,94.0,73.6,76.0,53.0,33.7,77.7,"Czech, Slovak",False,Europe,10882341,"Czech koruna (CZK, Kč)",31823.31,yes,Employee Card / Blue Card,37.0
+Côte d'Ivoire,393,Very Low,,,,,,,,French,False,Africa,31719275,"West African CFA franc (XOF, Fr)",2727.89,,,10.0
+Denmark,611,Very High,212.2,150.6,73.8,77.2,78.9,22.7,81.2,Danish,False,Europe,6011488,"Danish krone (DKK, kr)",71026.48,yes,Pay Limit / Fast-Track Scheme,37.0
+Dominican Republic,503,Moderate,,,,,,,,Spanish,False,Americas,10771504,"Dominican peso (DOP, $)",10875.66,,,1.0
+DR Congo,400,Very Low,,,,,,,,"French, Kikongo, Lingala, Swahili, Tshiluba",False,Africa,112832000,"Congolese franc (CDF, FC)",649.38,,,1.0
+Ecuador,466,Low,128.7,49.5,38.1,77.7,30.9,59.0,94.5,Spanish,False,Americas,18103660,"United States dollar (USD, $)",6874.71,,,2.0
+Egypt,458,Low,81.9,22.2,53.6,47.9,21.6,82.5,85.3,Arabic,False,Africa,107271260,"Egyptian pound (EGP, £)",,yes,Work Permit for Foreigners,2.0
+El Salvador,523,Moderate,,,,,,,,Spanish,False,Americas,6029976,"United States dollar (USD, $)",5579.66,,,2.0
+Estonia,561,High,190.7,90.3,76.8,75.2,59.7,16.1,71.2,Estonian,False,Europe,1369995,"euro (EUR, €)",31428.35,yes,Digital Nomad Visa / Work Permit,38.0
+Ethiopia,499,Low,,,,,,,,Amharic,False,Africa,111652998,"Ethiopian birr (ETB, Br)",1133.88,,,
+Finland,603,Very High,204.4,132.6,73.5,77.6,69.0,11.8,54.4,"Finnish, Swedish",False,Europe,5650325,"euro (EUR, €)",53149.77,yes,Residence Permit for Employed Persons,37.0
+France,539,Moderate,169.8,121.5,44.2,77.0,67.7,43.5,89.6,French,False,Europe,66351959,"euro (EUR, €)",46103.08,yes,Talent Passport (Passeport Talent),37.0
+Georgia,541,Moderate,126.6,44.2,73.8,56.3,33.1,67.8,88.5,Georgian,False,Asia,4000921,"lari (GEL, ₾)",9241.49,yes,No work permit required (visa-free stay for work),7.0
+Germany,615,Very High,196.3,142.0,61.6,72.4,68.7,28.2,82.9,German,False,Europe,83491249,"euro (EUR, €)",56103.73,yes,Skilled Immigration Act (Fachkräfteeinwanderungsgesetz),39.0
+Ghana,540,Moderate,,,,,,,,English,True,Africa,33742380,"Ghanaian cedi (GHS, ₵)",2390.77,,,13.0
+Greece,592,High,140.8,65.4,53.8,58.9,54.0,49.2,93.0,Greek,False,Europe,10400720,"euro (EUR, €)",24626.15,yes,Digital Nomad Visa,37.0
+Guatemala,510,Moderate,,,,,,,,Spanish,False,Americas,18079810,"Guatemalan quetzal (GTQ, Q)",6150.03,,,2.0
+Haiti,444,Very Low,,,,,,,,"French, Haitian Creole",False,Americas,11867032,"Haitian gourde (HTG, G)",2142.62,,,1.0
+Honduras,553,High,,,,,,,,Spanish,False,Americas,9892632,"Honduran lempira (HNL, L)",3426.43,,,3.0
+Hong Kong,538,Moderate,105.5,,78.3,65.6,72.4,,83.6,"Chinese, English",True,Asia,7527500,"Hong Kong dollar (HKD, $)",54074.69,yes,Quality Migrant Admission Scheme (QMAS),6.0
+Hungary,590,High,147.6,80.3,66.5,54.2,46.9,46.2,79.8,Hungarian,False,Europe,9539502,"Hungarian forint (HUF, Ft)",23292.33,yes,White Card (White-Card Scheme),37.0
+Iceland,,,191.1,,75,67.2,87.7,,68.8,,,,,,,,,
+India,484,Low,122.3,77.8,55.8,65.5,18.9,72.8,65.2,"English, Hindi, Tamil",True,Asia,1417492000,"Indian rupee (INR, ₹)",2694.74,yes,Employment Visa,4.0
+Indonesia,471,Low,91.1,30.0,53.6,61.2,26.1,68.0,66.5,Indonesian,False,Asia,284438782,"Indonesian rupiah (IDR, Rp)",4925.43,yes,Limited Stay Permit (KITAS) for Work,1.0
+Iran,492,Low,88.0,31.1,49.2,52.8,22.8,75.2,69.0,Persian (Farsi),False,Asia,85961000,"Iranian rial (IRR, ﷼)",5190.17,,,
+Iraq,406,Very Low,,,,,,,,"Arabic, Aramaic, Sorani",False,Asia,46118793,"Iraqi dinar (IQD, ع.د)",6073.61,,,
+Ireland,,,153.2,,53.9,51.9,70.4,,89.1,,,,,,,,,
+Israel,524,Moderate,167.7,123.1,68.2,73.4,79.7,56.5,93.8,"Arabic, Hebrew",False,Asia,10134800,"Israeli new shekel (ILS, ₪)",54176.68,yes,Expert Work Visa (B/1),2.0
+Italy,513,Moderate,152.9,91.4,52.7,64.9,61.4,53.1,89.8,"Catalan, Italian",False,Europe,58927633,"euro (EUR, €)",40385.34,yes,Nulla Osta / Decreto Flussi,37.0
+Japan,446,Very Low,185.6,121.1,77.2,80.1,47.5,37.8,83.8,Japanese,False,Asia,123210000,"Japanese yen (JPY, ¥)",32487.08,yes,Highly Skilled Professional Visa (HSP),2.0
+Jordan,425,Very Low,125.6,55.2,60.3,65.6,39.4,77.1,91.2,Arabic,False,Asia,11734000,"Jordanian dinar (JOD, د.ا)",4618.1,,,1.0
+Kazakhstan,417,Very Low,107.5,56.8,54.8,60.7,29.8,73.0,34.8,"Kazakh, Russian",False,Asia,20426568,"Kazakhstani tenge (KZT, ₸)",14154.63,yes,Work Permit for Highly Qualified Specialists,7.0
+Kenya,593,High,99.4,36.7,44.9,62.2,28.9,69.0,87.1,"English, Swahili",True,Africa,53330978,"Kenyan shilling (KES, Sh)",2132.43,yes,Work Permit Class G,4.0
+Kuwait,455,Low,162.7,182.8,67.4,58.6,42.5,69.4,20.2,Arabic,False,Asia,4881254,"Kuwaiti dinar (KWD, د.ك)",32717.72,,,9.0
+Kyrgyzstan,443,Very Low,,,,,,,,"Kyrgyz, Russian",False,Asia,7281800,"Kyrgyzstani som (KGS, с)",2420.19,,,5.0
+Laos,461,Low,,,,,,,,Lao,False,Asia,7647000,"Lao kip (LAK, ₭)",2123.98,,,1.0
+Latvia,598,High,167.3,79.1,63.7,63.6,52.3,29.1,76.8,Latvian,False,Europe,1829000,"euro (EUR, €)",23409.08,yes,Residence Permit for Highly Qualified Employees,37.0
+Lebanon,477,Low,98.2,38.4,53.1,63.7,41.7,89.3,94.7,"Arabic, French",False,Asia,5490000,"Lebanese pound (LBP, ل.ل)",,,,2.0
+Libya,395,Very Low,,,,,,,,Arabic,False,Africa,7459000,"Libyan dinar (LYD, ل.د)",6569.16,,,1.0
+Lithuania,543,Moderate,178.2,89.7,66.8,75.4,51.2,25.2,69.9,Lithuanian,False,Europe,2894886,"euro (EUR, €)",29384.02,yes,Work Permit / Blue Card,37.0
+Madagascar,457,Low,,,,,,,,"French, Malagasy",False,Africa,31727042,"Malagasy ariary (MGA, Ar)",544.99,,,
+Malawi,465,Low,,,,,,,,"Chewa, English",True,Africa,20734262,"Malawian kwacha (MWK, MK)",522.57,,,5.0
+Malaysia,581,High,135.2,81.8,52.0,70.7,34.0,60.6,58.1,"English, Malay",True,Asia,34231700,"Malaysian ringgit (MYR, RM)",11874.43,yes,Employment Pass,5.0
+Mali,408,Very Low,,,,,,,,French,False,Africa,22395489,"West African CFA franc (XOF, Fr)",1094.62,,,11.0
+Malta,,,121.8,,60,52,59.4,,97.4,,,,,,,,,
+Mexico,440,Very Low,125.3,49.8,47.1,72.3,42.6,58.3,86.6,Spanish,False,Americas,130575786,"Mexican peso (MXN, $)",14185.78,yes,Temporary Resident Work Visa,2.0
+Moldova,531,Moderate,,,,,,,,Romanian,False,Europe,2749076,"Moldovan leu (MDL, L)",7576.2,,,9.0
+Mongolia,447,Very Low,,,,,,,,Mongolian,False,Asia,3544835,"Mongolian tögrög (MNT, ₮)",6750.63,,,1.0
+Morocco,492,Low,114.1,46.5,53.0,46.8,31.4,68.6,90.3,"Arabic, Berber",False,Africa,36828330,"Moroccan dirham (MAD, د.م.)",4153.19,yes,Work Authorization (Autorisation de Travail),5.0
+Mozambique,465,Low,,,,,,,,Portuguese,False,Africa,34090466,"Mozambican metical (MZN, MT)",656.78,,,2.0
+Myanmar,444,Very Low,,,,,,,,Burmese,False,Asia,51316756,"Burmese kyat (MMK, Ks)",1359.05,,,
+Nepal,514,Moderate,,,,,,,,Nepali,False,Asia,29911840,"Nepalese rupee (NPR, ₨)",1447.31,,,2.0
+Netherlands,624,Very High,213.6,136.6,74.5,81.5,73.4,20.9,86.9,Dutch,False,Europe,18100436,"euro (EUR, €)",67520.42,yes,Highly Skilled Migrant Programme (HSMP),37.0
+New Zealand,,,170.9,,52.9,69.7,70.7,,96.4,,,,,,,,,
+Nicaragua,512,Moderate,,,,,,,,Spanish,False,Americas,6803886,"Nicaraguan córdoba (NIO, C$)",2847.54,,,2.0
+Nigeria,568,High,0.0,8.7,33.8,48.3,27.7,87.1,70.7,English,True,Africa,223800000,"Nigerian naira (NGN, ₦)",735.27,,,11.0
+North Macedonia,595,High,124.2,66.1,58.6,55.4,35.5,79.2,79.9,Macedonian,False,Europe,1822612,"denar (MKD, den)",9291.86,,,3.0
+Norway,613,Very High,195.4,128.0,66.7,75.8,83.7,19.0,70.6,"Norwegian Bokmål, Norwegian Nynorsk, Sami",False,Europe,5606944,"Norwegian krone (NOK, kr)",86785.43,yes,Skilled Workers Residence Permit,37.0
+Oman,407,Very Low,207.6,156.3,81.6,63.5,43.6,36.5,71.3,Arabic,False,Asia,5343630,"Omani rial (OMR, ر.ع.)",20285.23,,,7.0
+Pakistan,493,Low,98.3,29.9,57.6,59.5,19.6,73.3,67.1,"English, Urdu",True,Asia,241499431,"Pakistani rupee (PKR, ₨)",1478.77,,,1.0
+Palestine,463,Low,,,,,,,,Arabic,False,Asia,5483450,"Egyptian pound (EGP, E£); Israeli new shekel (ILS, ₪); Jordanian dinar (JOD, JD)",,,,
+Panama,491,Low,120.4,45.7,57.2,61.2,45.5,55.9,68.2,Spanish,False,Americas,4064780,"Panamanian balboa (PAB, B/.); United States dollar (USD, $)",19161.22,,,2.0
+Paraguay,531,Moderate,,,,,,,,"Guaraní, Spanish",False,Americas,6109644,"Paraguayan guaraní (PYG, ₲)",6416.1,,,2.0
+Peru,519,Moderate,92.3,49.7,33.1,56.9,33.5,81.9,93.3,"Aymara, Quechua, Spanish",False,Americas,34350244,"Peruvian sol (PEN, S/ )",8452.37,,,2.0
+Philippines,569,High,87.1,34.6,56.5,66.8,30.1,72.5,68.4,"English, Filipino",True,Asia,114123600,"Philippine peso (PHP, ₱)",3984.83,yes,Alien Employment Permit (AEP),2.0
+Poland,600,Very High,156.1,99.8,71.3,57.9,47.3,55.5,75.7,Polish,False,Europe,37392000,"Polish złoty (PLN, zł)",25103.57,yes,Temporary Residence for Highly Qualified Workers,37.0
+Portugal,612,Very High,169.5,68.7,67.0,72.0,48.8,29.9,97.8,Portuguese,False,Europe,10749635,"euro (EUR, €)",29292.24,yes,D3 Highly Qualified Activity Visa,37.0
+Qatar,469,Low,182.7,160.3,84.8,73.6,50.4,60.0,36.0,Arabic,False,Asia,3173024,"Qatari riyal (QAR, ر.ق)",76688.69,yes,Permanent Residency for Skilled Workers,8.0
+Romania,605,Very High,143.0,78.6,67.2,56.5,40.6,58.4,76.3,Romanian,False,Europe,19036031,"Romanian leu (RON, lei)",20080.21,yes,Long-Stay Visa for Employment,37.0
+Russia,521,Moderate,115.6,63.2,61.8,61.6,36.5,58.4,38.0,Russian,False,Europe,146028325,"Russian ruble (RUB, ₽)",14889.02,,,6.0
+Rwanda,417,Very Low,,,,,,,,"English, French, Kinyarwanda",True,Africa,14104969,"Rwandan franc (RWF, Fr)",999.65,,,4.0
+Saudi Arabia,404,Very Low,165.3,136.0,76.7,62.2,43.9,61.7,38.6,Arabic,False,Asia,35300280,"Saudi riyal (SAR, ر.س)",35121.66,yes,Premium Residency / Iqama Work Permit,8.0
+Senegal,442,Very Low,,,,,,,,French,False,Africa,18593258,"West African CFA franc (XOF, Fr)",1773.22,,,12.0
+Serbia,578,High,127.6,64.7,63.0,52.1,42.6,65.8,82.7,Serbian,False,Europe,6567783,"Serbian dinar (RSD, дин.)",13679.21,yes,Temporary Residence Permit for Employment,2.0
+Singapore,,,153.2,,76.9,70.9,85.9,,57.5,,,,,,,,,
+Slovakia,606,Very High,181.5,89.9,75.5,66.2,54.1,22.7,80.6,Slovene,False,Europe,2130638,"euro (EUR, €)",34301.03,yes,Blue Card / Temporary Residence for Employment,37.0
+Somalia,398,Very Low,,,,,,,,"Arabic, Somali",False,Africa,19655000,"Somali shilling (SOS, Sh)",,,,2.0
+South Africa,602,Very High,150.9,112.0,25.5,64.0,37.1,56.9,95.7,"Afrikaans, English, Northern Sotho, Southern Ndebele, Southern Sotho, Swazi, Tsonga, Tswana, Venda, Xhosa, Zulu",True,Africa,63100945,"South African rand (ZAR, R)",2690.08,yes,Critical Skills Work Visa,6.0
+South Korea,522,Moderate,150.4,113.8,71.0,82.9,61.6,56.6,71.9,Korean,False,Asia,25950000,"North Korean won (KPW, ₩)",36238.64,yes,E-7 Specially Designated Activities Visa,2.0
+Spain,540,Moderate,185.8,108.0,62.4,77.2,51.6,35.3,92.8,"Basque, Catalan, Galician, Spanish",False,Europe,49315949,"euro (EUR, €)",35326.77,yes,Digital Nomad / Startup Visa,37.0
+Sri Lanka,486,Low,61.0,19.3,57.6,70.7,33.9,58.0,64.1,"Sinhala, Tamil",False,Asia,21763170,"Sri Lankan rupee (LKR, Rs  රු)",4515.57,,,1.0
+Sudan,421,Very Low,,,,,,,,"Arabic, English",True,Africa,51662000,"Sudanese pound (SDG, ج.س)",984.61,,,1.0
+Sweden,609,Very High,189.3,136.9,52.1,68.3,68.0,17.6,65.0,Swedish,False,Europe,10605098,"Swedish krona (SEK, kr)",57117.49,yes,Work Permit for Highly Qualified Workers,37.0
+Switzerland,564,High,206.2,176.1,72.6,71.2,110.7,24.3,80.7,"French, Italian, Romansh, Swiss German",False,Europe,9082848,"Swiss franc (CHF, Fr.)",103998.19,yes,Residence Permit B (Skilled Non-EU),36.0
+Syria,456,Low,,,,,,,,Arabic,False,Asia,25620000,"Syrian pound (SYP, £)",,,,1.0
+Taiwan,,,144.9,,83.9,85.9,53.3,,84.1,,,,,,,,,
+Tajikistan,409,Very Low,,,,,,,,"Russian, Tajik",False,Asia,10499000,"Tajikistani somoni (TJS, ЅМ)",1341.2,,,3.0
+Tanzania,479,Low,,,,,,,,"English, Swahili",True,Africa,68153004,"Tanzanian shilling (TZS, Sh)",1186.72,,,5.0
+Thailand,402,Very Low,106.8,46.7,63.4,77.5,38.0,75.6,68.0,Thai,False,Asia,65859640,"Thai baht (THB, ฿)",7346.62,yes,Non-Immigrant B Visa + Work Permit,2.0
+Togo,397,Very Low,,,,,,,,French,False,Africa,8095498,"West African CFA franc (XOF, Fr)",1119.38,,,10.0
+Tunisia,498,Low,117.6,36.3,55.1,56.6,29.1,69.5,94.3,Arabic,False,Africa,11972169,"Tunisian dinar (TND, د.ت)",4181.14,,,6.0
+Turkey,488,Low,142.1,74.7,58.5,71.3,39.2,63.9,90.0,Turkish,False,Asia,85664944,"Turkish lira (TRY, ₺)",15892.72,yes,Work Permit / Turquoise Card,3.0
+Turkmenistan,456,Low,,,,,,,,"Russian, Turkmen",False,Asia,7057841,"Turkmenistan manat (TMT, m)",6856.66,,,2.0
+Uganda,518,Moderate,,,,,,,,"English, Swahili",True,Africa,45905417,"Ugandan shilling (UGX, Sh)",1077.91,,,5.0
+UK,,,164.2,,53.1,73.7,63.6,,88.3,,,,,,,,,
+Ukraine,526,Moderate,117.1,51.1,53.1,55.8,28.2,62.2,71.3,Ukrainian,False,Europe,32862000,"Ukrainian hryvnia (UAH, ₴)",5389.47,yes,Temporary Residence for Work,5.0
+United Arab Emirates,487,Low,175.5,131.9,86.0,70.8,55.2,48.3,43.4,Arabic,False,Asia,11294243,"United Arab Emirates dirham (AED, د.إ)",50273.51,yes,Golden Visa / Green Visa,12.0
+United Kingdom,,,164.2,,53.1,73.7,63.6,,88.3,,,,,,,,,
+United States,,,173,,50.8,68.2,74.2,,77.8,,,,,,,,,
+Uruguay,542,Moderate,139.1,56.3,47.5,68.5,55.6,42.8,98.3,Spanish,False,Americas,3499451,"Uruguayan peso (UYU, $)",23906.51,yes,Temporary Residence (Residencia Temporaria),4.0
+USA,,,173,,50.8,68.2,74.2,,77.8,,,,,,,,,
+Uzbekistan,429,Very Low,,,,,,,,"Russian, Uzbek",False,Asia,37859698,"Uzbekistani soʻm (UZS, so'm)",3161.7,,,4.0
+Venezuela,520,Moderate,75.2,17.7,19.6,39.9,37.7,73.6,79.9,Spanish,False,Americas,28517000,"Venezuelan bolívar soberano (VES, Bs.S.)",4217.59,,,1.0
+Vietnam,500,Moderate,92.5,43.7,59.9,62.2,26.4,83.7,71.1,Vietnamese,False,Asia,101343800,"Vietnamese đồng (VND, ₫)",4717.29,yes,Work Permit / Temporary Residence Card,1.0
+Yemen,402,Very Low,,,,,,,,Arabic,False,Asia,32684503,"Yemeni rial (YER, ﷼)",,,,2.0
+Zambia,573,High,,,,,,,,English,True,Africa,2422712,"dalasi (GMD, D)",4413.13,,,15.0
+Zimbabwe,602,Very High,,,,,,,,"Chewa, Chibarwe, English, Kalanga, Khoisan, Ndau, Northern Ndebele, Shona, Sotho, Tonga, Tsonga, Tswana, Venda, Xhosa, Zimbabwean Sign Language",True,Africa,17073087,"Zimbabwean dollar (ZWL, $)",2497.2,,,5.0

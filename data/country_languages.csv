@@ -1,0 +1,195 @@
+country,iso2,iso3,official_languages,major_languages,english_official
+Afghanistan,AF,AFG,"Uzbek, Turkmen, Arabic, Balochi, Pashayi, Pashto, Dari, Pamir, Nuristani","Uzbek, Turkmen, Arabic, Balochi, Pashayi, Pashto, Dari, Pamir, Nuristani",false
+Albania,AL,ALB,Albanian,Albanian,false
+Algeria,DZ,DZA,"Arabic, Standard Algerian Berber","Arabic, Standard Algerian Berber",false
+Andorra,AD,AND,Catalan,Catalan,false
+Angola,AO,AGO,Portuguese,Portuguese,false
+Antigua and Barbuda,AG,ATG,English,English,true
+Argentina,AR,ARG,Spanish,Spanish,false
+Armenia,AM,ARM,Armenian,Armenian,false
+Australia,AU,AUS,"Auslan, Australian English","Auslan, Australian English",true
+Austria,AT,AUT,"German, Austrian Sign Language","German, Austrian Sign Language",false
+Azerbaijan,AZ,AZE,"Azerbaijani, Azerbaijani Sign Language","Azerbaijani, Azerbaijani Sign Language",false
+Bahrain,BH,BHR,Arabic,Arabic,false
+Bangladesh,BD,BGD,Bangla,Bangla,false
+Barbados,BB,BRB,"English, Bajan Creole","English, Bajan Creole",true
+Belarus,BY,BLR,"Russian, Belarusian","Russian, Belarusian",false
+Belgium,BE,BEL,"French, German, Dutch","French, German, Dutch",false
+Belize,BZ,BLZ,English,English,true
+Benin,BJ,BEN,French,French,false
+Bhutan,BT,BTN,Dzongkha,Dzongkha,false
+Bolivia,BO,BOL,"Spanish, Quechua, Aymara, Guarani","Spanish, Quechua, Aymara, Guarani",false
+Bosnia and Herzegovina,BA,BIH,"Croatian, Bosnian, Serbian","Croatian, Bosnian, Serbian",false
+Botswana,BW,BWA,English,English,true
+Brazil,BR,BRA,Portuguese,Portuguese,false
+Brunei,BN,BRN,"British English, Malay","British English, Malay",true
+Bulgaria,BG,BGR,Bulgarian,Bulgarian,false
+Burkina Faso,BF,BFA,"Dioula, Bissa, Mooré","Dioula, Bissa, Mooré",false
+Burundi,BI,BDI,"French, English, Kirundi","French, English, Kirundi",true
+Cambodia,KH,KHM,Khmer,Khmer,false
+Cameroon,CM,CMR,"French, English","French, English",true
+Canada,CA,CAN,"French, English","French, English",true
+Cape Verde,CV,CPV,"Portuguese, Cape Verdean Creole","Portuguese, Cape Verdean Creole",false
+Central African Republic,CF,CAF,"French, Sango","French, Sango",false
+Chad,TD,TCD,"French, Arabic","French, Arabic",false
+Chile,CL,CHL,Spanish,Spanish,false
+Colombia,CO,COL,Spanish,Spanish,false
+Comoros,KM,COM,"French, Arabic, Comorian","French, Arabic, Comorian",false
+Costa Rica,CR,CRI,Spanish,Spanish,false
+Croatia,HR,HRV,Croatian,Croatian,false
+Cuba,CU,CUB,Spanish,Spanish,false
+Cyprus,CY,CYP,"Turkish, Greek, Modern Greek","Turkish, Greek, Modern Greek",false
+Czech Republic,CZ,CZE,Czech,Czech,false
+Democratic Republic of the Congo,CD,COD,French,French,false
+Djibouti,DJ,DJI,"French, Arabic","French, Arabic",false
+Dominica,DM,DMA,English,English,true
+Dominican Republic,DO,DOM,Spanish,Spanish,false
+Ecuador,EC,ECU,"Spanish, Shuar, Northern Quichua","Spanish, Shuar, Northern Quichua",false
+Egypt,EG,EGY,Arabic,Arabic,false
+El Salvador,SV,SLV,Spanish,Spanish,false
+Equatorial Guinea,GQ,GNQ,"French, Spanish, Portuguese","French, Spanish, Portuguese",false
+Eritrea,ER,ERI,"English, Arabic, Tigrinya","English, Arabic, Tigrinya",true
+Estonia,EE,EST,Estonian,Estonian,false
+Eswatini,SZ,SWZ,"English, Swazi","English, Swazi",true
+Ethiopia,ET,ETH,,,false
+Federated States of Micronesia,FM,FSM,English,English,true
+Fiji,FJ,FJI,"English, Fijian, Fiji Hindi","English, Fijian, Fiji Hindi",true
+Finland,FI,FIN,"Finnish, Swedish, Sámi","Finnish, Swedish, Sámi",false
+France,FR,FRA,French,French,false
+Gabon,GA,GAB,French,French,false
+Georgia,GE,GEO,"Abkhaz, Georgian","Abkhaz, Georgian",false
+Germany,DE,DEU,German,German,false
+Ghana,GH,GHA,English,English,true
+Greece,GR,GRC,"Greek, Demotic Greek, Modern Greek","Greek, Demotic Greek, Modern Greek",false
+Grenada,GD,GRD,"English, Grenadian Creole English","English, Grenadian Creole English",true
+Guatemala,GT,GTM,Spanish,Spanish,false
+Guinea,GN,GIN,"French, languages of Guinea","French, languages of Guinea",false
+Guinea-Bissau,GW,GNB,Portuguese,Portuguese,false
+Guyana,GY,GUY,English,English,true
+Haiti,HT,HTI,"French, Haitian Creole","French, Haitian Creole",false
+Honduras,HN,HND,Spanish,Spanish,false
+Hungary,HU,HUN,Hungarian,Hungarian,false
+Iceland,IS,ISL,Icelandic,Icelandic,false
+India,IN,IND,"English, Hindi","English, Hindi",true
+Indonesia,ID,IDN,Indonesian,Indonesian,false
+Iran,IR,IRN,Persian,Persian,false
+Iraq,IQ,IRQ,"Arabic, Kurdish","Arabic, Kurdish",false
+Ireland,IE,IRL,"English, Irish","English, Irish",true
+Italy,IT,ITA,Italian,Italian,false
+Ivory Coast,CI,CIV,French,French,false
+Jamaica,JM,JAM,"English, Jamaican Patois","English, Jamaican Patois",true
+Japan,JP,JPN,Japanese,Japanese,false
+Jordan,JO,JOR,Arabic,Arabic,false
+Kazakhstan,KZ,KAZ,"Russian, Kazakh","Russian, Kazakh",false
+Kenya,KE,KEN,"English, Swahili","English, Swahili",true
+Kingdom of the Netherlands,NL,NLD,Dutch,Dutch,false
+Kiribati,KI,KIR,"English, Gilbertese","English, Gilbertese",true
+Kuwait,KW,KWT,Arabic,Arabic,false
+Kyrgyzstan,KG,KGZ,Kyrgyz,Kyrgyz,false
+Laos,LA,LAO,Lao,Lao,false
+Latvia,LV,LVA,Latvian,Latvian,false
+Lebanon,LB,LBN,Arabic,Arabic,false
+Lesotho,LS,LSO,"English, Sesotho","English, Sesotho",true
+Liberia,LR,LBR,English,English,true
+Libya,LY,LBY,Arabic,Arabic,false
+Liechtenstein,LI,LIE,German,German,false
+Lithuania,LT,LTU,Lithuanian,Lithuanian,false
+Luxembourg,LU,LUX,"French, German, Luxembourgish","French, German, Luxembourgish",false
+Madagascar,MG,MDG,"French, Malagasy","French, Malagasy",false
+Malawi,MW,MWI,"English, Chewa, Tumbuka","English, Chewa, Tumbuka",true
+Malaysia,MY,MYS,Malay,Malay,false
+Maldives,MV,MDV,Maldivian,Maldivian,false
+Mali,ML,MLI,"Bambara, Maninka, Minyanka, Bozo, Fula, Senufo, Kassonke, Hassaniya Arabic, Soninke, Tamasheq, Songhay, Bobo, Dogon","Bambara, Maninka, Minyanka, Bozo, Fula, Senufo, Kassonke, Hassaniya Arabic, Soninke, Tamasheq, Songhay, Bobo, Dogon",false
+Malta,MT,MLT,"English, Maltese","English, Maltese",true
+Marshall Islands,MH,MHL,"English, Marshallese","English, Marshallese",true
+Mauritania,MR,MRT,Arabic,Arabic,false
+Mauritius,MU,MUS,"French, English","French, English",true
+Mexico,MX,MEX,"Spanish, Nahuatl, Yucatec Maya","Spanish, Nahuatl, Yucatec Maya",false
+Moldova,MD,MDA,Romanian,Romanian,false
+Monaco,MC,MCO,French,French,false
+Mongolia,MN,MNG,Mongolian,Mongolian,false
+Montenegro,ME,MNE,Montenegrin,Montenegrin,false
+Morocco,MA,MAR,"Arabic, Standard Moroccan Tamazight","Arabic, Standard Moroccan Tamazight",false
+Mozambique,MZ,MOZ,Portuguese,Portuguese,false
+Myanmar,MM,MMR,Burmese,Burmese,false
+Namibia,NA,NAM,English,English,true
+Nauru,NR,NRU,"English, Nauruan","English, Nauruan",true
+Nepal,NP,NPL,Nepali,Nepali,false
+New Zealand,NZ,NZL,"English, New Zealand Sign Language, Māori","English, New Zealand Sign Language, Māori",true
+Nicaragua,NI,NIC,Spanish,Spanish,false
+Niger,NE,NER,Hausa,Hausa,false
+Nigeria,NG,NGA,English,English,true
+North Korea,KP,PRK,"Korean, North Korean standard language","Korean, North Korean standard language",false
+North Macedonia,MK,MKD,"Albanian, Macedonian","Albanian, Macedonian",false
+Norway,NO,NOR,"Norwegian, Bokmål, Nynorsk, Sámi","Norwegian, Bokmål, Nynorsk, Sámi",false
+Oman,OM,OMN,Arabic,Arabic,false
+Pakistan,PK,PAK,"English, Urdu","English, Urdu",true
+Palau,PW,PLW,"English, Japanese, Palauan","English, Japanese, Palauan",true
+Palestine,PS,PSE,Arabic,Arabic,false
+Panama,PA,PAN,Spanish,Spanish,false
+Papua New Guinea,PG,PNG,"English, Hiri Motu, Tok Pisin, Papua New Guinean Sign Language","English, Hiri Motu, Tok Pisin, Papua New Guinean Sign Language",true
+Paraguay,PY,PRY,"Spanish, Guarani","Spanish, Guarani",false
+People's Republic of China,CN,CHN,Putonghua,Putonghua,false
+Peru,PE,PER,"Spanish, Quechua, Aymara","Spanish, Quechua, Aymara",false
+Philippines,PH,PHL,"English, Filipino, Taglish","English, Filipino, Taglish",true
+Poland,PL,POL,Polish,Polish,false
+Portugal,PT,PRT,"Portuguese, Mirandese","Portuguese, Mirandese",false
+Qatar,QA,QAT,Arabic,Arabic,false
+Republic of the Congo,CG,COG,French,French,false
+Romania,RO,ROU,Romanian,Romanian,false
+Russia,RU,RUS,Russian,Russian,false
+Rwanda,RW,RWA,"French, English, Swahili, Kinyarwanda","French, English, Swahili, Kinyarwanda",true
+Saint Kitts and Nevis,KN,KNA,English,English,true
+Saint Lucia,LC,LCA,English,English,true
+Saint Vincent and the Grenadines,VC,VCT,English,English,true
+Samoa,WS,WSM,"English, Samoan","English, Samoan",true
+San Marino,SM,SMR,Italian,Italian,false
+Saudi Arabia,SA,SAU,Arabic,Arabic,false
+Senegal,SN,SEN,"French, Wolof, Balanta, Badyara","French, Wolof, Balanta, Badyara",false
+Serbia,RS,SRB,Serbian,Serbian,false
+Seychelles,SC,SYC,"French, English, Seychellois Creole","French, English, Seychellois Creole",true
+Sierra Leone,SL,SLE,"English, Krio","English, Krio",true
+Singapore,SG,SGP,"English, Tamil, Malay, Standard Chinese","English, Tamil, Malay, Standard Chinese",true
+Slovakia,SK,SVK,Slovak,Slovak,false
+Slovenia,SI,SVN,Slovene,Slovene,false
+Solomon Islands,SB,SLB,English,English,true
+Somalia,SO,SOM,"Arabic, Somali","Arabic, Somali",false
+South Africa,ZA,ZAF,"English, Xhosa, Zulu, Afrikaans, Venda, Tswana, Sesotho, Northern Sotho, Swazi, Tsonga, South African Sign Language, Southern Ndebele","English, Xhosa, Zulu, Afrikaans, Venda, Tswana, Sesotho, Northern Sotho, Swazi, Tsonga, South African Sign Language, Southern Ndebele",true
+South Korea,KR,KOR,"Korean, Korean Sign Language","Korean, Korean Sign Language",false
+South Sudan,SS,SSD,English,English,true
+Spain,ES,ESP,Spanish,Spanish,false
+Sri Lanka,LK,LKA,"Tamil, Sinhala","Tamil, Sinhala",false
+Sudan,SD,SDN,"English, Arabic","English, Arabic",true
+Suriname,SR,SUR,Dutch,Dutch,false
+Sweden,SE,SWE,Swedish,Swedish,false
+Switzerland,CH,CHE,"French, German, Italian, Romansh","French, German, Italian, Romansh",false
+Syria,SY,SYR,Arabic,Arabic,false
+São Tomé and Príncipe,ST,STP,Portuguese,Portuguese,false
+Taiwan,TW,TWN,"Amis, Taiwanese Sign Language, Taiwanese Hokkien, Rukai, Seediq, Puyuma, Saisiyat, Bunun, Taiwanese Hakka, Saaroa, Kavalan, Tsou, Truku, Paiwan, Standard Taiwanese Mandarin, Matsu dialect, Kinmen dialect, Wuqiu dialect, Kanakanavu, Yami, Atayal","Amis, Taiwanese Sign Language, Taiwanese Hokkien, Rukai, Seediq, Puyuma, Saisiyat, Bunun, Taiwanese Hakka, Saaroa, Kavalan, Tsou, Truku, Paiwan, Standard Taiwanese Mandarin, Matsu dialect, Kinmen dialect, Wuqiu dialect, Kanakanavu, Yami, Atayal",false
+Tajikistan,TJ,TJK,Tajik,Tajik,false
+Tanzania,TZ,TZA,"English, Swahili","English, Swahili",true
+Thailand,TH,THA,Thai,Thai,false
+The Bahamas,BS,BHS,English,English,true
+The Gambia,GM,GMB,English,English,true
+Timor-Leste,TL,TLS,"Portuguese, Tetum","Portuguese, Tetum",false
+Togo,TG,TGO,French,French,false
+Tonga,TO,TON,"English, Tongan","English, Tongan",true
+Trinidad and Tobago,TT,TTO,English,English,true
+Tunisia,TN,TUN,Arabic,Arabic,false
+Turkey,TR,TUR,Turkish,Turkish,false
+Turkmenistan,TM,TKM,Turkmen,Turkmen,false
+Tuvalu,TV,TUV,"English, Tuvaluan","English, Tuvaluan",true
+Uganda,UG,UGA,"English, Swahili","English, Swahili",true
+Ukraine,UA,UKR,Ukrainian,Ukrainian,false
+United Arab Emirates,AE,ARE,Arabic,Arabic,false
+United Kingdom,GB,GBR,English,English,true
+United States,US,USA,English,English,true
+Uruguay,UY,URY,,,false
+Uzbekistan,UZ,UZB,Uzbek,Uzbek,false
+Vanuatu,VU,VUT,"French, English, Bislama","French, English, Bislama",true
+Vatican City,VA,VAT,"Italian, Latin","Italian, Latin",false
+Venezuela,VE,VEN,"Spanish, Venezuelan Sign Language","Spanish, Venezuelan Sign Language",false
+Vietnam,VN,VNM,Vietnamese,Vietnamese,false
+Yemen,YE,YEM,Arabic,Arabic,false
+Zambia,ZM,ZMB,English,English,true
+Zimbabwe,ZW,ZWE,"English, Tsonga, Sesotho, Northern Ndebele, Tswana, Nambya, Zimbabwe Sign Language, Barwe, Xhosa, Ndau, Venda, Chewa, Kalanga, Khoisan, Tonga, Shona","English, Tsonga, Sesotho, Northern Ndebele, Tswana, Nambya, Zimbabwe Sign Language, Barwe, Xhosa, Ndau, Venda, Chewa, Kalanga, Khoisan, Tonga, Shona",true
