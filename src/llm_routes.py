@@ -22,10 +22,10 @@ def llm_search_decision(client, user_message):
         {
             "role": "system",
             "content": (
-                "You have access to a database of Keeping Up with the Kardashians episode titles, "
-                "descriptions, and IMDB ratings. Search is by a single word in the episode title. "
+                "You have access to a database of Reddit posts about living in different countries. "
+                "Search is by a single keyword in the post title. "
                 "Reply with exactly: YES followed by one space and ONE word to search (e.g. YES wedding), "
-                "or NO if the question does not need episode data."
+                "or NO if the question does not need database data."
             ),
         },
         {"role": "user", "content": user_message},
@@ -61,18 +61,24 @@ def register_chat_route(app, json_search):
         use_search, search_term = llm_search_decision(client, user_message)
 
         if use_search:
-            episodes = json_search(search_term or "Kardashian")
+            posts = json_search(search_term or "country")
             context_text = "\n\n---\n\n".join(
-                f"Title: {ep['title']}\nDescription: {ep['descr']}\nIMDB Rating: {ep['imdb_rating']}"
-                for ep in episodes
-            ) or "No matching episodes found."
+                "Title: {title}\nSubreddit: {subreddit}\nScore: {score}\nCountries: {countries}\nBody: {body}".format(
+                    title=post.get("title", ""),
+                    subreddit=post.get("subreddit", ""),
+                    score=post.get("score", ""),
+                    countries=", ".join(post.get("countries", [])),
+                    body=post.get("body", "") or "",
+                )
+                for post in posts
+            ) or "No matching posts found."
             messages = [
-                {"role": "system", "content": "Answer questions about Keeping Up with the Kardashians using only the episode information provided."},
-                {"role": "user", "content": f"Episode information:\n\n{context_text}\n\nUser question: {user_message}"},
+                {"role": "system", "content": "Answer questions about country relocation and living preferences using only the provided Reddit post information."},
+                {"role": "user", "content": f"Post information:\n\n{context_text}\n\nUser question: {user_message}"},
             ]
         else:
             messages = [
-                {"role": "system", "content": "You are a helpful assistant for Keeping Up with the Kardashians questions."},
+                {"role": "system", "content": "You are a helpful assistant for country recommendations and relocation questions."},
                 {"role": "user", "content": user_message},
             ]
 
