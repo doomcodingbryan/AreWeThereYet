@@ -64,23 +64,32 @@ def register_routes(app, search_engine=None):
             return jsonify({"error": "Search engine not initialized"}), 503
 
         data = request.get_json(silent=True) or {}
-        query = data.get("query", "").strip()
+        original_query = data.get("query", "").strip()
+        query = original_query
         top_k = data.get("top_k", 10)
 
-        if not query:
+        if not original_query:
             return jsonify({"error": "query is required"}), 400
 
+        transformed_query = query
         if USE_LLM:
             api_key = os.getenv("SPARK_API_KEY")
             if api_key:
                 try:
-                    query = _llm_modify_query(api_key, query)
-                    print(f"Modified query: '{data.get('query', '')}' -> '{query}'")
+                    transformed_query = _llm_modify_query(api_key, query)
+                    query = transformed_query
+                    print(f"Modified query: '{original_query}' -> '{query}'")
                 except Exception as e:
                     print(f"Failed to modify query: {e}")
 
         results = search_engine.search(query, top_k=top_k)
-        return jsonify({"query": query, "results": results})
+        return jsonify({
+            "query": query,
+            "original_query": original_query,
+            "transformed_query": transformed_query,
+            "rewritten": transformed_query != original_query,
+            "results": results,
+        })
 
     if USE_LLM:
         from llm_routes import register_chat_route

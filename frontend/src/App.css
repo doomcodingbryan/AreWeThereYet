@@ -176,6 +176,33 @@
   padding: 0.1rem 0.35rem;
 }
 
+.ai-query-overview {
+  width: min(900px, calc(100vw - 2rem));
+  margin-top: 0.9rem;
+  border: 1px solid #2f4a73;
+  background: #12203a;
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.overview-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7cabff;
+}
+
+.ai-query-overview p {
+  margin: 0;
+  color: #c9daf8;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.85rem;
+}
+
 /* ── Search results ────────────────────────────────────────────────────────── */
 
 #answer-box {

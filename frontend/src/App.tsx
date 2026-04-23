@@ -16,6 +16,8 @@ function App(): JSX.Element {
   const [useLlm, setUseLlm] = useState<boolean | null>(null)
   const [apiConnected, setApiConnected] = useState<boolean>(true)
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const [searchedQuery, setSearchedQuery] = useState<string>('')
+  const [interpretedQuery, setInterpretedQuery] = useState<string>('')
   const [results, setResults] = useState<CountryResult[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
@@ -96,6 +98,8 @@ function App(): JSX.Element {
 
     if (value.trim() === '') {
       setResults([])
+      setSearchedQuery('')
+      setInterpretedQuery('')
       setExplanations({})
       setExplanationLoading(false)
       setLoading(false)
@@ -104,6 +108,8 @@ function App(): JSX.Element {
 
     try {
       setLoading(true)
+      setSearchedQuery(value.trim())
+      setInterpretedQuery(value.trim())
       const response = await fetch('/api/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -117,10 +123,14 @@ function App(): JSX.Element {
         return
       }
       setApiConnected(true)
+      const original = data.original_query || value.trim()
+      const transformed = data.transformed_query || data.query || original
+      setSearchedQuery(original)
+      setInterpretedQuery(transformed)
       const fetched = data.results || []
       setResults(fetched)
       if (useLlm && fetched.length) {
-        fetchExplanations(value, fetched)
+        fetchExplanations(transformed, fetched)
       }
     } catch {
       setApiConnected(false)
@@ -224,6 +234,14 @@ function App(): JSX.Element {
       {!apiConnected && (
         <div className="api-warning">
           Backend connection missing. Start it with <code>python src/app.py</code>, then refresh.
+        </div>
+      )}
+
+      {!!searchedQuery && (
+        <div className="ai-query-overview">
+          <span className="overview-label">AI Overview</span>
+          <p>You searched for: <strong>{searchedQuery}</strong></p>
+          <p>AI interpreted this as: <strong>{interpretedQuery || searchedQuery}</strong></p>
         </div>
       )}
 

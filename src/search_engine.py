@@ -7,6 +7,7 @@ a TF-IDF index and ranks countries with a user's "vibe"  query.
 
 import csv
 import os
+import re
 
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,57 +15,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import normalize
 
 from country_profiles import build_country_profiles
-
-# Synonym map: query word → extra terms to append
-SYNONYMS = {
-    # Cost
-    "cheap":       ["affordable", "inexpensive", "low cost", "budget"],
-    "affordable":  ["cheap", "inexpensive", "low cost", "budget"],
-    "expensive":   ["high cost", "pricey", "costly"],
-    "budget":      ["cheap", "affordable", "low cost"],
-
-    # Safety (non-sentiment)
-    "safe":        ["low crime", "peaceful", "secure", "safety"],
-    "unsafe":      ["high crime", "dangerous", "crime rate"],
-    "dangerous":   ["unsafe", "high crime", "crime"],
-
-    # Weather / climate
-    "warm":        ["tropical", "hot", "sunny", "mild", "humid"],
-    "hot":         ["warm", "tropical", "sunny", "heat"],
-    "sunny":       ["warm", "tropical", "sunshine", "clear skies"],
-    "tropical":    ["warm", "humid", "hot", "beach", "rainforest"],
-    "cold":        ["cool", "nordic", "winter", "snow", "freezing"],
-    "cool":        ["mild", "temperate", "cold"],
-    "mild":        ["temperate", "moderate", "pleasant"],
-    "beach":       ["coastal", "ocean", "tropical", "seaside"],
-    "snow":        ["cold", "winter", "skiing", "alpine"],
-
-    # Nature
-    "nature":      ["outdoors", "hiking", "mountains", "forests", "wildlife"],
-    "hiking":      ["mountains", "trails", "outdoors", "nature", "trekking"],
-    "mountains":   ["hiking", "alps", "alpine", "elevation", "skiing"],
-    "ocean":       ["sea", "beach", "coastal", "diving", "surfing"],
-
-    # Lifestyle
-    "nightlife":   ["bars", "clubs", "social", "entertainment", "vibrant"],
-    "food":        ["cuisine", "restaurants", "culinary", "gastronomy"],
-    "culture":     ["arts", "history", "museums", "heritage", "traditions"],
-    "expat":       ["expatriate", "foreigner", "immigrant", "relocation", "abroad"],
-    "remote work": ["digital nomad", "wifi", "coworking", "internet", "laptop"],
-    "nomad":       ["remote work", "digital nomad", "freelance", "coworking"],
-
-    # English
-    "english":     ["english speaking", "anglophone", "english language"],
-
-    # Healthcare
-    "healthcare":  ["medical", "hospitals", "health system", "doctors"],
-    "medical":     ["healthcare", "hospitals", "health care"],
-
-    # Visa / immigration
-    "visa":        ["immigration", "residency", "work permit", "permit"],
-    "retire":      ["retirement", "pension", "retiree", "expat"],
-    "immigrate":   ["visa", "residency", "immigration", "move abroad"],
-}
+from search_config import (
+    COUNTRY_NAME_ALIASES,
+    INTENT_ANCHORS,
+    LANGUAGE_QUERY_ALIASES,
+    NOISY_TERMS,
+    SYNONYMS,
+)
 
 
 def expand_query(query: str) -> str:
@@ -136,21 +93,7 @@ def _normalize_country_name(name):
     if not name:
         return ""
     text = str(name).strip().lower()
-    aliases = {
-        "usa": "united states",
-        "united states of america": "united states",
-        "uk": "united kingdom",
-        "uae": "united arab emirates",
-        "czechia": "czech republic",
-        "south korea": "korea south",
-        "north macedonia": "north macedonia",
-        "hong kong": "hong kong",
-        "hong kong (china)": "hong kong",
-        "kingdom of the netherlands": "netherlands",
-        "korea, south": "korea south",
-        "bosnia and herzegovina": "bosnia and herzegovina",
-    }
-    return aliases.get(text, text)
+    return COUNTRY_NAME_ALIASES.get(text, text)
 
 
 def _load_language_metadata(csv_path=None):
@@ -181,20 +124,8 @@ def _extract_language_constraints(query):
     if not query:
         return set()
     q = query.lower()
-    aliases = {
-        "english": ["english speaking", "speak english", "english"],
-        "spanish": ["spanish speaking", "speak spanish", "spanish"],
-        "french": ["french speaking", "speak french", "french"],
-        "german": ["german speaking", "speak german", "german"],
-        "italian": ["italian speaking", "speak italian", "italian"],
-        "portuguese": ["portuguese speaking", "speak portuguese", "portuguese"],
-        "arabic": ["arabic speaking", "speak arabic", "arabic"],
-        "japanese": ["japanese speaking", "speak japanese", "japanese"],
-        "korean": ["korean speaking", "speak korean", "korean"],
-        "mandarin": ["mandarin speaking", "speak mandarin", "mandarin", "chinese speaking"],
-    }
     requested = set()
-    for canonical, patterns in aliases.items():
+    for canonical, patterns in LANGUAGE_QUERY_ALIASES.items():
         if any(p in q for p in patterns):
             requested.add(canonical)
     return requested
@@ -220,14 +151,11 @@ class CountrySearchEngine:
         self.metadata_svd = None
         self.metadata_lsa_matrix = None
         self.language_metadata = {}
-        self.intent_anchors = {
-            "safety": "safe secure safety security low_crime safety_index",
-            "climate": "weather climate warm sunny mild pleasant climate_index",
-            "cost": "affordable budget low_cost cheap inexpensive affordability cost_of_living_index",
-        }
+        self.intent_anchors = INTENT_ANCHORS
         self.anchor_tfidf_vectors = {}
         self.anchor_vectors = {}
         self.qol_weight = 0.20
+        self._last_query_vec = None
 
     def _build_metadata_document(self, country, meta):
         """Build a text document from structured metadata for semantic retrieval."""
@@ -258,6 +186,54 @@ class CountrySearchEngine:
             return 0.5
         return max(0.0, min(1.0, value / 100.0))
 
+    def _is_informative_term(self, term):
+        text = (term or "").strip().lower()
+        if not text:
+            return False
+        if text in NOISY_TERMS:
+            return False
+        if not re.search(r"[a-z]", text):
+            return False
+        tokens = [t for t in re.split(r"[\s_]+", text) if t]
+        if any(len(t) <= 2 for t in tokens):
+            return False
+        return True
+
+    def _query_aligned_terms(self, dim_idx, query_vec, top_n=3):
+        """
+        Label a latent dimension using terms that are both:
+        1) active in this query, and
+        2) strong in this SVD component.
+        """
+        if self.svd is None or self.vectorizer is None:
+            return []
+        feature_names = self.vectorizer.get_feature_names_out()
+        component = self.svd.components_[dim_idx]
+        q_arr = query_vec.toarray()[0]
+        # Query-weighted component importance per term
+        weighted = abs(component * q_arr)
+        ranked = weighted.argsort()[::-1]
+        picked = []
+        for idx in ranked:
+            if weighted[idx] <= 0:
+                break
+            term = str(feature_names[idx])
+            if self._is_informative_term(term):
+                picked.append(term)
+            if len(picked) >= top_n:
+                break
+        if picked:
+            return picked
+        # Fallback to strongest component terms (filtered)
+        comp_ranked = abs(component).argsort()[::-1]
+        for idx in comp_ranked:
+            term = str(feature_names[idx])
+            if self._is_informative_term(term):
+                picked.append(term)
+            if len(picked) >= top_n:
+                break
+        return picked
+
     def _extract_latent_dimensions(self, query_vec, svd, vectorizer, top_n=3):
         """Extract and label the top latent dimensions driving the query."""
         if svd is None or vectorizer is None:
@@ -274,22 +250,12 @@ class CountrySearchEngine:
         )[:top_n]
         
         dimensions = []
-        feature_names = vectorizer.get_feature_names_out()
-        
         for dim_idx in top_indices:
-            # Get the component vector and find top terms
-            component = svd.components_[dim_idx]
-            top_term_indices = sorted(
-                range(len(component)), 
-                key=lambda i: abs(component[i]), 
-                reverse=True
-            )[:5]
-            
-            top_terms = [feature_names[i] for i in top_term_indices]
+            top_terms = self._query_aligned_terms(dim_idx, query_vec, top_n=3)
             contribution = abs(query_lsa[0, dim_idx])
             
             # Generate a human-readable label from top terms
-            label = ", ".join(top_terms[:3])
+            label = ", ".join(top_terms[:3]) if top_terms else f"Dimension {dim_idx}"
             
             dimensions.append({
                 "dimension": dim_idx,
@@ -377,7 +343,6 @@ class CountrySearchEngine:
         Positive dims = themes where query and doc align.
         Negative dims = themes that pull them apart.
         """
-        feature_names = self.vectorizer.get_feature_names_out()
         q_vec = query_lsa[0]
         d_vec = self.lsa_matrix[doc_idx]
         contributions = q_vec * d_vec
@@ -386,18 +351,21 @@ class CountrySearchEngine:
         pos_dims = [k for k in sorted_dims if contributions[k] > 0.001][:top_pos]
         neg_dims = [k for k in reversed(sorted_dims) if contributions[k] < -0.001][:top_neg]
 
-        def top_terms(dim_idx, n=3):
-            component = self.svd.components_[dim_idx]
-            top_indices = component.argsort()[-n:][::-1]
-            return [str(feature_names[i]) for i in top_indices]
-
         return {
             "positive": [
-                {"dim": k, "terms": top_terms(k), "contribution": round(float(contributions[k]), 4)}
+                {
+                    "dim": k,
+                    "terms": self._query_aligned_terms(k, self._last_query_vec, top_n=3),
+                    "contribution": round(float(contributions[k]), 4)
+                }
                 for k in pos_dims
             ],
             "negative": [
-                {"dim": k, "terms": top_terms(k), "contribution": round(float(contributions[k]), 4)}
+                {
+                    "dim": k,
+                    "terms": self._query_aligned_terms(k, self._last_query_vec, top_n=3),
+                    "contribution": round(float(contributions[k]), 4)
+                }
                 for k in neg_dims
             ],
         }
@@ -416,6 +384,7 @@ class CountrySearchEngine:
         query = expand_query(query)
 
         query_vec = self.vectorizer.transform([query])
+        self._last_query_vec = query_vec
         tfidf_scores = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
 
         # Compute semantic similarity in reduced LSA space.
