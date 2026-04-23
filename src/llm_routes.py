@@ -6,7 +6,7 @@ Adds a POST /api/chat endpoint that implements the RAG pipeline:
              → LLM answers from retrieved docs → frontend displays both
 
 Setup:
-  1. Add API_KEY=your_key to .env
+  1. Add SPARK_API_KEY=your_key to .env
   2. Set USE_LLM = True in routes.py
 """
 import json
@@ -137,7 +137,7 @@ def register_chat_route(app, _json_search, search_engine=None):
         if not query or not countries:
             return jsonify({"error": "query and countries required"}), 400
 
-        api_key = os.getenv("SPARK_API_KEY") or os.getenv("API_KEY")
+        api_key = os.getenv("SPARK_API_KEY")
         if not api_key:
             return jsonify({"error": "API_KEY not set"}), 500
 
