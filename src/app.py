@@ -66,8 +66,15 @@ def init_db():
                         has_country=(post_data.get('has_country') == "True")
                     )
 
-                    # Handle countries (many-to-many)
-                    for country_name in post_data.get('countries', []):  
+                    # Handle countries (many-to-many); JSON stores them as a string repr of a list
+                    raw_countries = post_data.get('countries', [])
+                    if isinstance(raw_countries, str):
+                        try:
+                            import ast
+                            raw_countries = ast.literal_eval(raw_countries)
+                        except (ValueError, SyntaxError):
+                            raw_countries = []
+                    for country_name in raw_countries:
                         if country_name in country_cache:
                             country = country_cache[country_name]
                         else:

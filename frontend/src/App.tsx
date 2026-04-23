@@ -1,7 +1,6 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import './App.css'
 import SearchIcon from './assets/mag.png'
-import Chat from './Chat'
 import { CountryResult } from './types'
 
 const SUGGESTED_CATEGORIES = [
@@ -23,6 +22,9 @@ function App(): JSX.Element {
   const [regionFilter, setRegionFilter] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'match' | 'cost' | 'safety'>('match')
   const [selected, setSelected] = useState<CountryResult | null>(null)
+  const [explanations, setExplanations] = useState<Record<string, string>>({})
+  const [explanationLoading, setExplanationLoading] = useState<boolean>(false)
+  const explainAbortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     fetch('/api/config')
@@ -38,12 +40,59 @@ function App(): JSX.Element {
       })
   }, [])
 
+  const fetchExplanations = async (query: string, results: CountryResult[]): Promise<void> => {
+    if (explainAbortRef.current) explainAbortRef.current.abort()
+    const ctrl = new AbortController()
+    explainAbortRef.current = ctrl
+    setExplanations({})
+    setExplanationLoading(true)
+
+    try {
+      const response = await fetch('/api/explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, countries: results }),
+        signal: ctrl.signal,
+      })
+      if (!response.ok) return
+
+      const reader = response.body!.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() ?? ''
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              if (data.country && data.explanation) {
+                setExplanations(prev => ({ ...prev, [data.country]: data.explanation }))
+              }
+            } catch { /* ignore malformed */ }
+          }
+        }
+      }
+    } catch (e) {
+      if ((e as Error).name !== 'AbortError') console.error(e)
+    } finally {
+      setExplanationLoading(false)
+    }
+  }
+
   const handleSearch = async (value: string): Promise<void> => {
     setSearchTerm(value)
     setError('')
+    if (explainAbortRef.current) explainAbortRef.current.abort()
 
     if (value.trim() === '') {
       setResults([])
+      setExplanations({})
+      setExplanationLoading(false)
       setLoading(false)
       return
     }
@@ -63,7 +112,11 @@ function App(): JSX.Element {
         return
       }
       setApiConnected(true)
-      setResults(data.results || [])
+      const fetched = data.results || []
+      setResults(fetched)
+      if (useLlm && fetched.length) {
+        fetchExplanations(value, fetched)
+      }
     } catch {
       setApiConnected(false)
       setError('Search failed. Is the Flask backend running on port 5001?')
@@ -115,7 +168,7 @@ function App(): JSX.Element {
   if (useLlm === null) return <></>
 
   return (
-    <div className={`full-body-container ${useLlm ? 'llm-mode' : ''}`}>
+    <div className="full-body-container">
 
       {/* Search bar */}
       <div className="top-text">
@@ -285,6 +338,20 @@ function App(): JSX.Element {
                   </div>
                 )}
               </div>
+
+              {explanations[res.country] && (
+                <div className="country-explanation">
+                  <span className="explanation-label">AI Insight</span>
+                  <p>{explanations[res.country]}</p>
+                </div>
+              )}
+              {!explanations[res.country] && explanationLoading && idx < 5 && (
+                <div className="explanation-loading">
+                  <span className="loading-dot" />
+                  <span className="loading-dot" />
+                  <span className="loading-dot" />
+                </div>
+              )}
             </div>
           )
         })}
@@ -315,8 +382,6 @@ function App(): JSX.Element {
         </div>
       )}
 
-      {/* Chat (optional) */}
-      {useLlm && <Chat onSearchTerm={handleSearch} />}
     </div>
   )
 }

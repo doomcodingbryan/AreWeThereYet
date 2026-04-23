@@ -531,10 +531,10 @@ class CountrySearchEngine:
         results = []
         for idx in ranked_indices:
             country = self.country_names[idx]
-            score = float(reranked_scores.get(idx, stage1_scores[idx]))
+            stage2_score = float(reranked_scores.get(idx, stage1_scores[idx]))
 
             # Skip countries with zero similarity
-            if score <= 0:
+            if stage2_score <= 0:
                 continue
 
             # Attach metadata if available
@@ -552,7 +552,9 @@ class CountrySearchEngine:
 
             results.append({
                 "country": country,
-                "score": score,
+                # Keep stage2 for ranking; use stage1 (pure semantic) for display.
+                "score": stage2_score,
+                "_stage1": float(stage1_scores[idx]),
                 "metadata": {
                     "region": meta.get("region", ""),
                     "quality_of_life_index": meta.get("quality_of_life_index", ""),
@@ -568,11 +570,12 @@ class CountrySearchEngine:
                 }
             })
 
-        # Normalize scores relative to the best match so percentages are meaningful
-        if results:
-            max_score = results[0]["score"]
-            if max_score > 0:
-                for r in results:
-                    r["score"] = round(r["score"] / max_score, 4)
+        # Display score = stage1 (semantic cosine, unaffected by safety boosting),
+        # scaled against an empirical ceiling so weak queries show low percentages.
+        # A ceiling of 0.38 means a "perfect" semantic match shows ~95-100%.
+        SCORE_CEILING = 0.38
+        for r in results:
+            r["score"] = round(min(1.0, r["_stage1"] / SCORE_CEILING), 4)
+            del r["_stage1"]
 
         return results
