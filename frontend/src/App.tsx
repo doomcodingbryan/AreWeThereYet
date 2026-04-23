@@ -67,13 +67,17 @@ function App(): JSX.Element {
         const lines = buffer.split('\n')
         buffer = lines.pop() ?? ''
         for (const line of lines) {
+          console.log('Received line:', line)
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
+              console.log('Parsed data:', data)
               if (data.country && data.explanation) {
                 setExplanations(prev => ({ ...prev, [data.country]: data.explanation }))
               }
-            } catch { /* ignore malformed */ }
+            } catch (e) {
+              console.log('Parse error:', e)
+            }
           }
         }
       }
@@ -267,6 +271,17 @@ function App(): JSX.Element {
                 <span className="match-score">{Math.round(res.score * 100)}% Match</span>
               </div>
 
+              {res.latent_dimensions?.length ? (
+                <div className="latent-dimensions-row">
+                  <span className="latent-label">Latent themes:</span>
+                  {res.latent_dimensions.map((dim) => (
+                    <span key={dim.dimension} className="latent-chip">
+                      {dim.label}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
               <div className="metric-row">
                 <div className="metric">
                   <span>Safety</span>
@@ -368,6 +383,23 @@ function App(): JSX.Element {
               <strong>Best for:</strong> {selected.metadata.region || 'Global fit'} lifestyle, with a{' '}
               {Math.round(selected.score * 100)}% match based on Reddit relocation discussions.
             </p>
+
+            {selected.latent_dimensions?.length && (
+              <div className="modal-latent-section">
+                <h4>Latent dimension relevance</h4>
+                <p>This result is being boosted by themes discovered through semantic SVD.
+                The top latent dimensions are:</p>
+                <ul>
+                  {selected.latent_dimensions.map((dim) => (
+                    <li key={dim.dimension}>
+                      <strong>Dimension {dim.dimension}</strong>: {dim.label} (
+                      {Math.round(dim.contribution * 100)}% relative strength)
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <ul className="modal-facts">
               <li>Quality of life: {selected.metadata.quality_of_life_index || 'N/A'}</li>
               <li>Cost of living: {selected.metadata.cost_of_living_index || 'N/A'}</li>

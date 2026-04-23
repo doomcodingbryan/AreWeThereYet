@@ -12,8 +12,15 @@ export interface CountryMetadata {
   visa_name: string;
 }
 
+export interface LatentDimension {
+  dimension: number;
+  label: string;
+  contribution: number;
+}
+
 export interface CountryResult {
   country: string;
   score: number;
+  latent_dimensions?: LatentDimension[];
   metadata: CountryMetadata;
 }

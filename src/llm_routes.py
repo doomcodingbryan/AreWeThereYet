@@ -134,9 +134,11 @@ def register_chat_route(app, _json_search, search_engine=None):
         if not query or not countries:
             return jsonify({"error": "query and countries required"}), 400
 
-        api_key = os.getenv("API_KEY")
+        api_key = os.getenv("SPARK_API_KEY")
         if not api_key:
             return jsonify({"error": "API_KEY not set"}), 500
+
+        print(f"Explain called with query: {query}, countries: {[c.get('country') for c in countries[:5]]}")
 
         def generate():
             for entry in countries[:5]:
@@ -145,12 +147,16 @@ def register_chat_route(app, _json_search, search_engine=None):
 
                 posts = (
                     Post.query
-                    .join(Post.countries)
-                    .filter(CountryModel.name == country_name)
+                    .filter(
+                        (Post.title.ilike(f'%{country_name}%')) |
+                        (Post.body.ilike(f'%{country_name}%'))
+                    )
                     .order_by(Post.score.desc())
                     .limit(3)
                     .all()
                 )
+
+                print(f"Country: {country_name}, posts found: {len(posts)}")
 
                 if not posts:
                     continue
@@ -181,6 +187,7 @@ def register_chat_route(app, _json_search, search_engine=None):
                 ]
 
                 try:
+                    print(f"Calling LLM for {country_name}")
                     resp = _spark_call(api_key, messages, stream=False)
                     explanation = (
                         resp.json()
@@ -189,9 +196,12 @@ def register_chat_route(app, _json_search, search_engine=None):
                         .get("content", "")
                         .strip()
                     )
+                    print(f"LLM response for {country_name}: '{explanation[:100]}...'")
                     if explanation:
+                        print(f"Yielding explanation for {country_name}")
                         yield f"data: {json.dumps({'country': country_name, 'explanation': explanation})}\n\n"
                 except Exception as e:
+                    print(f"Error for {country_name}: {e}")
                     logger.error(f"Explanation error for {country_name}: {e}")
 
         return Response(
@@ -207,7 +217,7 @@ def register_chat_route(app, _json_search, search_engine=None):
         if not user_message:
             return jsonify({"error": "Message is required"}), 400
 
-        api_key = os.getenv("API_KEY")
+        api_key = os.getenv("SPARK_API_KEY")
         if not api_key:
             return jsonify({"error": "API_KEY not set — add it to your .env file"}), 500
 

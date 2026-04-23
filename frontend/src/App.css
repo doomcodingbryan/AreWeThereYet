@@ -199,6 +199,32 @@
   gap: 0.75rem;
 }
 
+.latent-dimensions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.85rem;
+}
+
+.latent-label {
+  color: #99b4e6;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.latent-chip {
+  background: rgba(90, 127, 193, 0.18);
+  border: 1px solid #3f5490;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  color: #d6e3ff;
+  font-size: 0.82rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
 .country-title {
   font-size: 1.5rem;
   color: #9cc1ff;
@@ -335,6 +361,38 @@
   color: #c8d8f5;
   margin: 0;
   white-space: pre-wrap;
+}
+
+.modal-latent-section {
+  margin: 1rem 0 0.8rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: #14203b;
+  border: 1px solid #2e4165;
+}
+
+.modal-latent-section h4 {
+  margin: 0 0 0.5rem;
+  color: #aecbff;
+  font-size: 1rem;
+}
+
+.modal-latent-section p {
+  margin: 0 0 0.75rem;
+  color: #c7d8f4;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.modal-latent-section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #d8e6ff;
+  font-size: 0.88rem;
+}
+
+.modal-latent-section li {
+  margin-bottom: 0.5rem;
 }
 
 /* ── Per-card AI explanation ───────────────────────────────────────────────── */

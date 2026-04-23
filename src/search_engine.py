@@ -258,6 +258,47 @@ class CountrySearchEngine:
             return 0.5
         return max(0.0, min(1.0, value / 100.0))
 
+    def _extract_latent_dimensions(self, query_vec, svd, vectorizer, top_n=3):
+        """Extract and label the top latent dimensions driving the query."""
+        if svd is None or vectorizer is None:
+            return []
+        
+        # Transform query to LSA space
+        query_lsa = svd.transform(query_vec)
+        
+        # Get top components by absolute contribution
+        top_indices = sorted(
+            range(len(query_lsa[0])), 
+            key=lambda i: abs(query_lsa[0, i]), 
+            reverse=True
+        )[:top_n]
+        
+        dimensions = []
+        feature_names = vectorizer.get_feature_names_out()
+        
+        for dim_idx in top_indices:
+            # Get the component vector and find top terms
+            component = svd.components_[dim_idx]
+            top_term_indices = sorted(
+                range(len(component)), 
+                key=lambda i: abs(component[i]), 
+                reverse=True
+            )[:5]
+            
+            top_terms = [feature_names[i] for i in top_term_indices]
+            contribution = abs(query_lsa[0, dim_idx])
+            
+            # Generate a human-readable label from top terms
+            label = ", ".join(top_terms[:3])
+            
+            dimensions.append({
+                "dimension": dim_idx,
+                "label": label,
+                "contribution": float(contribution)
+            })
+        
+        return dimensions
+
     def build_index(self, json_path=None, csv_path=None):
         """
         Build the TF-IDF index from Reddit data and load metadata.
@@ -343,8 +384,11 @@ class CountrySearchEngine:
         # Expand query with synonyms before vectorizing
         query = expand_query(query)
 
-        # Compute lexical similarity in raw TF-IDF space.
+        # Extract latent dimensions from the profile index (for explanation)
         query_vec = self.vectorizer.transform([query])
+        latent_dims = self._extract_latent_dimensions(
+            query_vec, self.svd, self.vectorizer, top_n=3
+        )
         tfidf_scores = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
 
         # Compute semantic similarity in reduced LSA space.
@@ -555,6 +599,7 @@ class CountrySearchEngine:
                 # Keep stage2 for ranking; use stage1 (pure semantic) for display.
                 "score": stage2_score,
                 "_stage1": float(stage1_scores[idx]),
+                "latent_dimensions": latent_dims,
                 "metadata": {
                     "region": meta.get("region", ""),
                     "quality_of_life_index": meta.get("quality_of_life_index", ""),
