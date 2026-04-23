@@ -24,6 +24,7 @@ function App(): JSX.Element {
   const [selected, setSelected] = useState<CountryResult | null>(null)
   const [explanations, setExplanations] = useState<Record<string, string>>({})
   const [explanationLoading, setExplanationLoading] = useState<boolean>(false)
+  const [explanationRateLimited, setExplanationRateLimited] = useState<boolean>(false)
   const explainAbortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
@@ -45,6 +46,7 @@ function App(): JSX.Element {
     const ctrl = new AbortController()
     explainAbortRef.current = ctrl
     setExplanations({})
+    setExplanationRateLimited(false)
     setExplanationLoading(true)
 
     try {
@@ -67,17 +69,16 @@ function App(): JSX.Element {
         const lines = buffer.split('\n')
         buffer = lines.pop() ?? ''
         for (const line of lines) {
-          console.log('Received line:', line)
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
-              console.log('Parsed data:', data)
               if (data.country && data.explanation) {
                 setExplanations(prev => ({ ...prev, [data.country]: data.explanation }))
               }
-            } catch (e) {
-              console.log('Parse error:', e)
-            }
+              if (data.error === 'rate_limited') {
+                setExplanationRateLimited(true)
+              }
+            } catch { /* ignore malformed */ }
           }
         }
       }
@@ -193,8 +194,14 @@ function App(): JSX.Element {
             id="search-input"
             placeholder="Describe what you're looking for (e.g. warm beach, good transit)..."
             value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
           />
+          <button
+            type="button"
+            className="search-submit-btn"
+            onClick={() => handleSearch(searchTerm)}
+          >Search</button>
         </div>
 
         <div className="suggested-categories">
@@ -243,6 +250,12 @@ function App(): JSX.Element {
             </select>
           </label>
         </div>
+      )}
+
+      {explanationRateLimited && (
+        <p className="explanation-rate-limited-banner">
+          AI insights unavailable, hourly token limit reached. Dimension tags still work. Try again later.
+        </p>
       )}
 
       {loading && (

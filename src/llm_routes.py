@@ -19,6 +19,9 @@ logger = logging.getLogger(__name__)
 
 SPARK_ENDPOINT = "https://4300spark.infosci.cornell.edu/api/chat"
 
+# In-memory cache: (query, frozenset of country names) → {country: explanation}
+_explanation_cache: dict = {}
+
 
 def _spark_call(api_key, messages, stream=False):
     """Call the Cornell Spark LLM endpoint."""
@@ -134,75 +137,90 @@ def register_chat_route(app, _json_search, search_engine=None):
         if not query or not countries:
             return jsonify({"error": "query and countries required"}), 400
 
-        api_key = os.getenv("SPARK_API_KEY")
+        api_key = os.getenv("SPARK_API_KEY") or os.getenv("API_KEY")
         if not api_key:
             return jsonify({"error": "API_KEY not set"}), 500
 
-        print(f"Explain called with query: {query}, countries: {[c.get('country') for c in countries[:5]]}")
-
         def generate():
+            cache_key = (query.lower().strip(), frozenset(c.get("country", "") for c in countries))
+            if cache_key in _explanation_cache:
+                for country_name, explanation in _explanation_cache[cache_key].items():
+                    yield f"data: {json.dumps({'country': country_name, 'explanation': explanation})}\n\n"
+                return
+
+            # Build one context block per country, then make a single LLM call.
+            country_blocks = []
+            valid_countries = []
             for entry in countries:
                 country_name = entry.get("country", "")
                 score = entry.get("score", 0)
-
                 posts = (
                     Post.query
-                    .filter(
-                        (Post.title.ilike(f'%{country_name}%')) |
-                        (Post.body.ilike(f'%{country_name}%'))
-                    )
+                    .join(Post.countries)
+                    .filter(CountryModel.name == country_name)
                     .order_by(Post.score.desc())
-                    .limit(3)
+                    .limit(2)
                     .all()
                 )
-
-                print(f"Country: {country_name}, posts found: {len(posts)}")
-
                 if not posts:
                     continue
-
-                post_context = "\n\n".join(
-                    f"Title: {p.title}\nBody: {(p.body or '')[:400]}"
+                post_context = "\n".join(
+                    f"  - {p.title}: {(p.body or '')[:200]}"
                     for p in posts
                 )
+                country_blocks.append(
+                    f"Country: {country_name} ({round(score * 100)}% match)\n{post_context}"
+                )
+                valid_countries.append(country_name)
 
-                messages = [
-                    {
-                        "role": "system",
-                        "content": (
-                            "You are a country relocation expert. Given a user's search query and Reddit posts "
-                            "about a country, write exactly 2-3 sentences explaining why this country matches "
-                            "the query. Be specific — cite themes or details from the posts. "
-                            "Output only the explanation, no headers or labels."
-                        ),
-                    },
-                    {
-                        "role": "user",
-                        "content": (
-                            f"Query: \"{query}\"\n"
-                            f"Country: {country_name} ({round(score * 100)}% match)\n\n"
-                            f"Reddit posts:\n{post_context}"
-                        ),
-                    },
-                ]
+            if not country_blocks:
+                return
 
-                try:
-                    print(f"Calling LLM for {country_name}")
-                    resp = _spark_call(api_key, messages, stream=False)
-                    explanation = (
-                        resp.json()
-                        .get("choices", [{}])[0]
-                        .get("message", {})
-                        .get("content", "")
-                        .strip()
-                    )
-                    print(f"LLM response for {country_name}: '{explanation[:100]}...'")
+            all_context = "\n\n---\n\n".join(country_blocks)
+            country_list = ", ".join(f'"{c}"' for c in valid_countries)
+
+            messages = [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a country relocation expert. For each country listed, write exactly "
+                        "2-3 sentences explaining why it matches the search query based on the Reddit posts. "
+                        "Be specific — cite themes or details from the posts. "
+                        f"Return a JSON object with country names as keys and explanations as values. "
+                        f"Only include these countries: {country_list}. "
+                        "Return only valid JSON, no extra text."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": f"Query: \"{query}\"\n\n{all_context}",
+                },
+            ]
+
+            try:
+                resp = _spark_call(api_key, messages, stream=False)
+                raw = (
+                    resp.json()
+                    .get("choices", [{}])[0]
+                    .get("message", {})
+                    .get("content", "")
+                    .strip()
+                )
+                # Strip markdown code fences if present
+                if raw.startswith("```"):
+                    raw = raw.split("```")[1]
+                    if raw.startswith("json"):
+                        raw = raw[4:]
+                explanations = json.loads(raw)
+                _explanation_cache[cache_key] = {}
+                for country_name, explanation in explanations.items():
                     if explanation:
-                        print(f"Yielding explanation for {country_name}")
+                        _explanation_cache[cache_key][country_name] = explanation
                         yield f"data: {json.dumps({'country': country_name, 'explanation': explanation})}\n\n"
-                except Exception as e:
-                    print(f"Error for {country_name}: {e}")
-                    logger.error(f"Explanation error for {country_name}: {e}")
+            except Exception as e:
+                logger.error(f"Batch explanation error: {e}")
+                if "429" in str(e):
+                    yield f"data: {json.dumps({'error': 'rate_limited'})}\n\n"
 
         return Response(
             stream_with_context(generate()),
