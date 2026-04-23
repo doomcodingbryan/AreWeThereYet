@@ -67,7 +67,7 @@ def init_db():
                     )
 
                     # Handle countries (many-to-many)
-                    for country_name in post_data.get('countries', []):
+                    for country_name in post_data.get('countries', []):  
                         if country_name in country_cache:
                             country = country_cache[country_name]
                         else:

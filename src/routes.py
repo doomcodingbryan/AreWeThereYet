@@ -9,7 +9,7 @@ from flask import send_from_directory, request, jsonify
 from models import db, Post, Country
 
 # ── AI toggle ────────────────────────────────────────────────────────────────
-USE_LLM = False
+USE_LLM = True
 # USE_LLM = True
 # ─────────────────────────────────────────────────────────────────────────────
 
