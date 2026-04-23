@@ -3,6 +3,73 @@ import './App.css'
 import SearchIcon from './assets/mag.png'
 import { CountryResult } from './types'
 
+interface LatentPoint {
+  dim: number
+  terms: string[]
+  contribution: number
+}
+
+interface LatentDimensions {
+  positive: LatentPoint[]
+  negative: LatentPoint[]
+}
+
+function LatentDimensionChart({ dimensions }: { dimensions?: LatentDimensions }): JSX.Element | null {
+  if (!dimensions) return null
+  const positive = dimensions.positive || []
+  const negative = dimensions.negative || []
+  if (positive.length === 0 && negative.length === 0) return null
+
+  const points: LatentPoint[] = [...positive, ...negative].sort(
+    (a, b) => Math.abs(b.contribution) - Math.abs(a.contribution)
+  )
+  const maxAbs = Math.max(
+    ...points.map((p) => Math.abs(p.contribution)),
+    0.0001
+  )
+
+  return (
+    <div className="latent-chart">
+      <div className="latent-chart-header">
+        <span className="latent-chart-title">Latent dimension contributions</span>
+        <span className="latent-chart-legend">
+          <span className="legend-dot legend-pos" /> aligns
+          <span className="legend-dot legend-neg" /> contrasts
+        </span>
+      </div>
+      <div className="latent-chart-rows">
+        {points.map((p) => {
+          const widthPct = (Math.abs(p.contribution) / maxAbs) * 48
+          const barStyle =
+            p.contribution >= 0
+              ? { left: '50%', width: `${widthPct}%` }
+              : { left: `${50 - widthPct}%`, width: `${widthPct}%` }
+          const label = p.terms.slice(0, 3).join(' · ') || `Dim ${p.dim}`
+          return (
+            <div key={`lat-${p.dim}`} className="latent-chart-row">
+              <div className="latent-chart-meta">
+                <strong>{label}</strong>
+                <small>Dim {p.dim}</small>
+              </div>
+              <div className="latent-chart-track">
+                <div className="latent-chart-midline" />
+                <div
+                  className={`latent-chart-bar ${p.contribution >= 0 ? 'positive' : 'negative'}`}
+                  style={barStyle}
+                />
+              </div>
+              <span className={`latent-chart-value ${p.contribution >= 0 ? 'pos' : 'neg'}`}>
+                {p.contribution >= 0 ? '+' : ''}
+                {p.contribution.toFixed(3)}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 const SUGGESTED_CATEGORIES = [
   { label: 'Tech Hubs', query: 'strong tech jobs, startup scene, and good public transit' },
   { label: 'Beach Living', query: 'warm beach lifestyle with safety and good healthcare' },
@@ -19,6 +86,7 @@ function App(): JSX.Element {
   const [searchedQuery, setSearchedQuery] = useState<string>('')
   const [interpretedQuery, setInterpretedQuery] = useState<string>('')
   const [results, setResults] = useState<CountryResult[]>([])
+  const [useSvd, setUseSvd] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [regionFilter, setRegionFilter] = useState<string>('all')
@@ -113,7 +181,7 @@ function App(): JSX.Element {
       const response = await fetch('/api/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: value })
+        body: JSON.stringify({ query: value, svd_weight: useSvd ? null : 0 })
       })
       const data = await response.json()
       if (!response.ok) {
@@ -227,6 +295,25 @@ function App(): JSX.Element {
                 {item.label}
               </button>
             ))}
+          </div>
+        </div>
+        <div className="svd-toggle-wrap" role="group" aria-label="Ranking mode">
+          <span className="svd-toggle-label">Ranking mode</span>
+          <div className="svd-toggle">
+            <button
+              type="button"
+              className={`svd-toggle-option ${!useSvd ? 'active' : ''}`}
+              onClick={() => setUseSvd(false)}
+            >
+              TF-IDF only
+            </button>
+            <button
+              type="button"
+              className={`svd-toggle-option ${useSvd ? 'active' : ''}`}
+              onClick={() => setUseSvd(true)}
+            >
+              TF-IDF + SVD
+            </button>
           </div>
         </div>
       </div>
@@ -374,34 +461,8 @@ function App(): JSX.Element {
                 )}
               </div>
 
-              {res.dimensions && (res.dimensions.positive.length > 0 || res.dimensions.negative.length > 0) && (
-                <div className="dimension-row">
-                  {res.dimensions.positive.length > 0 && (
-                    <div className="dimension-group">
-                      <span className="dim-label">Matched on</span>
-                      {res.dimensions.positive.map((d, i) => (
-                        <span key={i} className="dim-tag dim-pos">
-                          <span className="dim-num">Dim {d.dim}</span>
-                          <span className="dim-terms">{d.terms.slice(0, 2).join(' · ')}</span>
-                          <span className="dim-score">Score: +{d.contribution.toFixed(3)}</span>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  {res.dimensions.negative.length > 0 && (
-                    <div className="dimension-group">
-                      <span className="dim-label">Contrasts</span>
-                      {res.dimensions.negative.map((d, i) => (
-                        <span key={i} className="dim-tag dim-neg">
-                          <span className="dim-num">Dim {d.dim}</span>
-                          <span className="dim-terms">{d.terms.slice(0, 2).join(' · ')}</span>
-                          <span className="dim-score">Score: {d.contribution.toFixed(3)}</span>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+              <LatentDimensionChart dimensions={res.dimensions} />
+
 
               {explanations[res.country] && (
                 <div className="country-explanation">

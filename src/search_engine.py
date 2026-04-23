@@ -17,6 +17,7 @@ from sklearn.preprocessing import normalize
 from country_profiles import build_country_profiles
 from search_config import (
     COUNTRY_NAME_ALIASES,
+    DEFAULT_RANKING,
     INTENT_ANCHORS,
     LANGUAGE_QUERY_ALIASES,
     NOISY_TERMS,
@@ -141,11 +142,11 @@ class CountrySearchEngine:
         self.svd = None
         self.lsa_matrix = None
         self.metadata = {}
-        self.n_components = 100
+        self.n_components = DEFAULT_RANKING["n_components"]
         # Blend lexical match (TF-IDF) with semantic match (SVD/LSA).
-        self.hybrid_alpha = 0.35
-        self.metadata_blend = 0.40
-        self.stage2_candidate_k = 30
+        self.hybrid_alpha = DEFAULT_RANKING["hybrid_alpha"]
+        self.metadata_blend = DEFAULT_RANKING["metadata_blend"]
+        self.stage2_candidate_k = DEFAULT_RANKING["stage2_candidate_k"]
         self.metadata_vectorizer = None
         self.metadata_tfidf_matrix = None
         self.metadata_svd = None
@@ -154,7 +155,7 @@ class CountrySearchEngine:
         self.intent_anchors = INTENT_ANCHORS
         self.anchor_tfidf_vectors = {}
         self.anchor_vectors = {}
-        self.qol_weight = 0.20
+        self.qol_weight = DEFAULT_RANKING["qol_weight"]
         self._last_query_vec = None
 
     def _build_metadata_document(self, country, meta):
@@ -199,18 +200,21 @@ class CountrySearchEngine:
             return False
         return True
 
-    def _query_aligned_terms(self, dim_idx, query_vec, top_n=3):
+    def _query_aligned_terms(self, dim_idx, query_vec, top_n=3, exclude=None):
         """
         Label a latent dimension using terms that are both:
         1) active in this query, and
         2) strong in this SVD component.
+
+        `exclude` is an optional set of terms already used by other displayed
+        dimensions, so each dim surfaces distinct labels.
         """
         if self.svd is None or self.vectorizer is None:
             return []
+        exclude = set(exclude or [])
         feature_names = self.vectorizer.get_feature_names_out()
         component = self.svd.components_[dim_idx]
         q_arr = query_vec.toarray()[0]
-        # Query-weighted component importance per term
         weighted = abs(component * q_arr)
         ranked = weighted.argsort()[::-1]
         picked = []
@@ -218,16 +222,19 @@ class CountrySearchEngine:
             if weighted[idx] <= 0:
                 break
             term = str(feature_names[idx])
+            if term in exclude:
+                continue
             if self._is_informative_term(term):
                 picked.append(term)
             if len(picked) >= top_n:
                 break
         if picked:
             return picked
-        # Fallback to strongest component terms (filtered)
         comp_ranked = abs(component).argsort()[::-1]
         for idx in comp_ranked:
             term = str(feature_names[idx])
+            if term in exclude:
+                continue
             if self._is_informative_term(term):
                 picked.append(term)
             if len(picked) >= top_n:
@@ -342,35 +349,50 @@ class CountrySearchEngine:
         Per-dimension signed contribution: q̂_k · d̂_k for each LSA dimension.
         Positive dims = themes where query and doc align.
         Negative dims = themes that pull them apart.
+
+        Labels are deduped across the dimensions we actually display so each
+        dim shows distinct terms.
         """
         q_vec = query_lsa[0]
         d_vec = self.lsa_matrix[doc_idx]
         contributions = q_vec * d_vec
 
         sorted_dims = sorted(range(len(contributions)), key=lambda k: contributions[k], reverse=True)
-        pos_dims = [k for k in sorted_dims if contributions[k] > 0.001][:top_pos]
-        neg_dims = [k for k in reversed(sorted_dims) if contributions[k] < -0.001][:top_neg]
+        # Require contributions to be at least ~1% of the strongest positive signal
+        # so we don't show near-zero "contrasts" that look misleading.
+        max_abs = float(max((abs(c) for c in contributions), default=0.0))
+        min_magnitude = max(0.003, 0.01 * max_abs)
+        pos_dims = [k for k in sorted_dims if contributions[k] > min_magnitude][:top_pos]
+        neg_dims = [k for k in reversed(sorted_dims) if contributions[k] < -min_magnitude][:top_neg]
 
-        return {
-            "positive": [
-                {
-                    "dim": k,
-                    "terms": self._query_aligned_terms(k, self._last_query_vec, top_n=3),
-                    "contribution": round(float(contributions[k]), 4)
-                }
-                for k in pos_dims
-            ],
-            "negative": [
-                {
-                    "dim": k,
-                    "terms": self._query_aligned_terms(k, self._last_query_vec, top_n=3),
-                    "contribution": round(float(contributions[k]), 4)
-                }
-                for k in neg_dims
-            ],
-        }
+        used_terms = set()
+        positive = []
+        for k in pos_dims:
+            terms = self._query_aligned_terms(
+                k, self._last_query_vec, top_n=3, exclude=used_terms
+            )
+            used_terms.update(terms)
+            positive.append({
+                "dim": int(k),
+                "terms": terms,
+                "contribution": round(float(contributions[k]), 4),
+            })
 
-    def search(self, query, top_k=10):
+        negative = []
+        for k in neg_dims:
+            terms = self._query_aligned_terms(
+                k, self._last_query_vec, top_n=3, exclude=used_terms
+            )
+            used_terms.update(terms)
+            negative.append({
+                "dim": int(k),
+                "terms": terms,
+                "contribution": round(float(contributions[k]), 4),
+            })
+
+        return {"positive": positive, "negative": negative}
+
+    def search(self, query, top_k=10, svd_weight=None):
         """
         Rank countries by cosine similarity to the query.
         """
@@ -388,14 +410,23 @@ class CountrySearchEngine:
         tfidf_scores = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
 
         # Compute semantic similarity in reduced LSA space.
+        effective_hybrid_alpha = self.hybrid_alpha
+        if svd_weight is not None:
+            try:
+                svd_weight = float(svd_weight)
+                svd_weight = max(0.0, min(1.0, svd_weight))
+                effective_hybrid_alpha = 1.0 - svd_weight
+            except (TypeError, ValueError):
+                effective_hybrid_alpha = self.hybrid_alpha
+
         query_lsa = None
         similarities = tfidf_scores
         if self.svd is not None and self.lsa_matrix is not None:
             query_lsa = normalize(self.svd.transform(query_vec))
             lsa_scores = cosine_similarity(query_lsa, self.lsa_matrix).flatten()
             similarities = (
-                self.hybrid_alpha * tfidf_scores
-                + (1 - self.hybrid_alpha) * lsa_scores
+                effective_hybrid_alpha * tfidf_scores
+                + (1 - effective_hybrid_alpha) * lsa_scores
             )
 
         # Query the structured-metadata semantic index as well.
@@ -412,8 +443,8 @@ class CountrySearchEngine:
                     meta_query_lsa, self.metadata_lsa_matrix
                 ).flatten()
                 metadata_scores = (
-                    self.hybrid_alpha * meta_tfidf_scores
-                    + (1 - self.hybrid_alpha) * meta_lsa_scores
+                    effective_hybrid_alpha * meta_tfidf_scores
+                    + (1 - effective_hybrid_alpha) * meta_lsa_scores
                 )
 
         # Stage 1 base semantic score combines profile and metadata retrieval.
@@ -481,17 +512,20 @@ class CountrySearchEngine:
 
         # Keep semantic signals dominant by default; strengthen structured reranking
         # only when safety intent is semantically strong.
-        stage2_profile_w = 0.45
-        stage2_meta_w = 0.30
-        stage2_feature_total = 0.25
+        stage2_profile_w = DEFAULT_RANKING["stage2_profile_w_default"]
+        stage2_meta_w = DEFAULT_RANKING["stage2_meta_w_default"]
+        stage2_feature_total = DEFAULT_RANKING["stage2_feature_total_default"]
         safety_floor = None
-        if safety_intent_conf >= 0.22 and safety_intent_share >= 0.45:
+        if (
+            safety_intent_conf >= DEFAULT_RANKING["safety_intent_conf_threshold"]
+            and safety_intent_share >= DEFAULT_RANKING["safety_intent_share_threshold"]
+        ):
             # For "safe / secure" style queries, lift safety as a stronger rerank signal.
-            stage2_profile_w = 0.35
-            stage2_meta_w = 0.20
-            stage2_feature_total = 0.45
-            safety_floor = 60.0
-            safety_weight = max(safety_weight, 0.65)
+            stage2_profile_w = DEFAULT_RANKING["stage2_profile_w_safety_boost"]
+            stage2_meta_w = DEFAULT_RANKING["stage2_meta_w_safety_boost"]
+            stage2_feature_total = DEFAULT_RANKING["stage2_feature_total_safety_boost"]
+            safety_floor = DEFAULT_RANKING["safety_floor_strict"]
+            safety_weight = max(safety_weight, DEFAULT_RANKING["safety_weight_floor_safety_boost"])
             remaining = max(0.0, 1.0 - safety_weight)
             if climate_weight + cost_weight > 0:
                 norm = climate_weight + cost_weight
@@ -500,9 +534,9 @@ class CountrySearchEngine:
             else:
                 climate_weight = remaining * 0.5
                 cost_weight = remaining * 0.5
-        elif safety_weight >= 0.38:
+        elif safety_weight >= DEFAULT_RANKING["safety_weight_partial_threshold"]:
             # Mixed intents like "good weather and safe": remove only very unsafe options.
-            safety_floor = 45.0
+            safety_floor = DEFAULT_RANKING["safety_floor_partial"]
 
         reranked_scores = {}
         for idx in candidate_indices:
@@ -544,9 +578,13 @@ class CountrySearchEngine:
             # Safety-aware penalty shaped by semantic safety weight.
             # Keeps NLP central while demoting low-safety countries when safety matters.
             if safety_weight > 0:
-                safety_gap = max(0.0, (0.65 - safety) / 0.65)
-                penalty = 1.0 - min(0.65, 1.6 * safety_weight * safety_gap)
-                stage2_score *= max(0.35, penalty)
+                target = DEFAULT_RANKING["safety_penalty_target"]
+                safety_gap = max(0.0, (target - safety) / target)
+                penalty = 1.0 - min(
+                    0.65,
+                    DEFAULT_RANKING["safety_penalty_scale"] * safety_weight * safety_gap,
+                )
+                stage2_score *= max(DEFAULT_RANKING["safety_penalty_min"], penalty)
             reranked_scores[idx] = stage2_score
 
         if not reranked_scores:
@@ -619,9 +657,9 @@ class CountrySearchEngine:
         # Display score = stage1 (semantic cosine, unaffected by safety boosting),
         # scaled against an empirical ceiling so weak queries show low percentages.
         # A ceiling of 0.38 means a "perfect" semantic match shows ~95-100%.
-        SCORE_CEILING = 0.38
+        score_ceiling = DEFAULT_RANKING["score_ceiling"]
         for r in results:
-            r["score"] = round(min(1.0, r["_stage1"] / SCORE_CEILING), 4)
+            r["score"] = round(min(1.0, r["_stage1"] / score_ceiling), 4)
             del r["_stage1"]
 
         return results

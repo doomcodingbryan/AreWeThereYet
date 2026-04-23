@@ -67,6 +67,7 @@ def register_routes(app, search_engine=None):
         original_query = data.get("query", "").strip()
         query = original_query
         top_k = data.get("top_k", 10)
+        svd_weight = data.get("svd_weight", None)
 
         if not original_query:
             return jsonify({"error": "query is required"}), 400
@@ -82,12 +83,13 @@ def register_routes(app, search_engine=None):
                 except Exception as e:
                     print(f"Failed to modify query: {e}")
 
-        results = search_engine.search(query, top_k=top_k)
+        results = search_engine.search(query, top_k=top_k, svd_weight=svd_weight)
         return jsonify({
             "query": query,
             "original_query": original_query,
             "transformed_query": transformed_query,
             "rewritten": transformed_query != original_query,
+            "svd_weight": svd_weight,
             "results": results,
         })
 

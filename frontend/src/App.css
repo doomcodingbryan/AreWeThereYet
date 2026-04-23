@@ -157,6 +157,54 @@
   border-color: #7ba0ff;
 }
 
+.svd-toggle-wrap {
+  width: min(820px, 100%);
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #b7caf0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.svd-toggle-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #94a9d4;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.svd-toggle {
+  display: inline-flex;
+  background: #16223a;
+  border: 1px solid #4a5f8a;
+  border-radius: 999px;
+  padding: 3px;
+}
+
+.svd-toggle-option {
+  background: transparent;
+  border: none;
+  color: #b7caf0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.svd-toggle-option:hover {
+  color: #e4ecff;
+}
+
+.svd-toggle-option.active {
+  background: #1e3a70;
+  color: #d6e4ff;
+  border: 1px solid #4a6aaa;
+}
+
 .api-warning {
   width: min(900px, calc(100vw - 2rem));
   margin-top: 0.9rem;
@@ -407,7 +455,136 @@
   white-space: pre-wrap;
 }
 
-/* ── SVD dimension activations ─────────────────────────────────────────────── */
+/* ── Latent dimension chart ────────────────────────────────────────────────── */
+
+.latent-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  border-top: 1px solid #2a4062;
+  padding-top: 0.75rem;
+}
+
+.latent-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.latent-chart-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #8aa4d6;
+}
+
+.latent-chart-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.7rem;
+  color: #7a90b8;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  margin-right: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.legend-dot.legend-pos { background: #43c98a; }
+.legend-dot.legend-neg { background: #8a8aa8; }
+
+.latent-chart-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.latent-chart-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.4fr) 2fr auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.latent-chart-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  overflow: hidden;
+}
+
+.latent-chart-meta strong {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.8rem;
+  color: #d9e4ff;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.latent-chart-meta small {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.66rem;
+  color: #7a90b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.latent-chart-track {
+  position: relative;
+  height: 10px;
+  background: #1a2845;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.latent-chart-midline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: #3a4e72;
+}
+
+.latent-chart-bar {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 999px;
+  transition: width 0.2s ease, left 0.2s ease;
+}
+
+.latent-chart-bar.positive {
+  background: linear-gradient(90deg, #2a8a5e, #43c98a);
+}
+
+.latent-chart-bar.negative {
+  background: linear-gradient(90deg, #6a6a88, #8a8aa8);
+}
+
+.latent-chart-value {
+  font-family: 'Open Sans', monospace;
+  font-size: 0.75rem;
+  min-width: 58px;
+  text-align: right;
+}
+
+.latent-chart-value.pos { color: #7eedb8; }
+.latent-chart-value.neg { color: #9898b8; }
+
+/* ── SVD dimension activations (legacy chips, retained for reference) ──────── */
 
 .dimension-row {
   display: flex;
