@@ -139,7 +139,7 @@ def register_chat_route(app, _json_search, search_engine=None):
             return jsonify({"error": "API_KEY not set"}), 500
 
         def generate():
-            for entry in countries[:5]:
+            for entry in countries:
                 country_name = entry.get("country", "")
                 score = entry.get("score", 0)
 

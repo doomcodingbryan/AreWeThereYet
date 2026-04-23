@@ -10,6 +10,32 @@ import ast
 import json
 import math
 import os
+import re
+
+# Matches sentences where the *speaker* is the subject (not the destination).
+# e.g. "I moved to Germany" → filtered out
+#      "Germany has a large immigrant community" → kept
+_FIRST_PERSON_RE = re.compile(
+    r"\bI\b\s+(?:am|was|were|have|had|'m|'ve|moved|live|lived|grew|came|come|"
+    r"immigrated|emigrated|relocated|left|grew\s+up|currently\s+live|used\s+to\s+live)",
+    re.IGNORECASE,
+)
+
+
+def _strip_first_person(text: str) -> str:
+    """Remove sentences that describe the speaker's own experience rather than the destination."""
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    kept = []
+    for s in sentences:
+        s = s.strip()
+        if not s:
+            continue
+        if re.match(r"^I[\s',\"]", s):
+            continue
+        if _FIRST_PERSON_RE.search(s):
+            continue
+        kept.append(s)
+    return ' '.join(kept)
 
 
 def _parse_countries(raw):
@@ -71,6 +97,10 @@ def build_country_profiles(json_path=None):
 
         text = post.get("full_text") or post.get("body") or post.get("title", "")
         if not text or len(text.strip()) < 50:
+            continue
+
+        text = _strip_first_person(text)
+        if len(text.strip()) < 30:
             continue
 
         weight = _social_weight(post)

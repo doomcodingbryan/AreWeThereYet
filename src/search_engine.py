@@ -330,6 +330,37 @@ class CountrySearchEngine:
             f"{meta_component_count} latent dimensions"
         )
 
+    def _get_dimension_activations(self, query_lsa, doc_idx, top_pos=3, top_neg=2):
+        """
+        Per-dimension signed contribution: q̂_k · d̂_k for each LSA dimension.
+        Positive dims = themes where query and doc align.
+        Negative dims = themes that pull them apart.
+        """
+        feature_names = self.vectorizer.get_feature_names_out()
+        q_vec = query_lsa[0]
+        d_vec = self.lsa_matrix[doc_idx]
+        contributions = q_vec * d_vec
+
+        sorted_dims = sorted(range(len(contributions)), key=lambda k: contributions[k], reverse=True)
+        pos_dims = [k for k in sorted_dims if contributions[k] > 0.001][:top_pos]
+        neg_dims = [k for k in reversed(sorted_dims) if contributions[k] < -0.001][:top_neg]
+
+        def top_terms(dim_idx, n=3):
+            component = self.svd.components_[dim_idx]
+            top_indices = component.argsort()[-n:][::-1]
+            return [str(feature_names[i]) for i in top_indices]
+
+        return {
+            "positive": [
+                {"dim": k, "terms": top_terms(k), "contribution": round(float(contributions[k]), 4)}
+                for k in pos_dims
+            ],
+            "negative": [
+                {"dim": k, "terms": top_terms(k), "contribution": round(float(contributions[k]), 4)}
+                for k in neg_dims
+            ],
+        }
+
     def search(self, query, top_k=10):
         """
         Rank countries by cosine similarity to the query.
@@ -348,6 +379,7 @@ class CountrySearchEngine:
         tfidf_scores = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
 
         # Compute semantic similarity in reduced LSA space.
+        query_lsa = None
         similarities = tfidf_scores
         if self.svd is not None and self.lsa_matrix is not None:
             query_lsa = normalize(self.svd.transform(query_vec))
@@ -550,11 +582,16 @@ class CountrySearchEngine:
                 or meta.get("english_official", "")
             )
 
+            dims = (
+                self._get_dimension_activations(query_lsa, idx)
+                if query_lsa is not None else None
+            )
             results.append({
                 "country": country,
                 # Keep stage2 for ranking; use stage1 (pure semantic) for display.
                 "score": stage2_score,
                 "_stage1": float(stage1_scores[idx]),
+                "dimensions": dims,
                 "metadata": {
                     "region": meta.get("region", ""),
                     "quality_of_life_index": meta.get("quality_of_life_index", ""),

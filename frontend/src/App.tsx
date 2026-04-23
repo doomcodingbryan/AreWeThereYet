@@ -339,13 +339,42 @@ function App(): JSX.Element {
                 )}
               </div>
 
+              {res.dimensions && (res.dimensions.positive.length > 0 || res.dimensions.negative.length > 0) && (
+                <div className="dimension-row">
+                  {res.dimensions.positive.length > 0 && (
+                    <div className="dimension-group">
+                      <span className="dim-label">Matched on</span>
+                      {res.dimensions.positive.map((d, i) => (
+                        <span key={i} className="dim-tag dim-pos">
+                          <span className="dim-num">Dim {d.dim}</span>
+                          <span className="dim-terms">{d.terms.slice(0, 2).join(' · ')}</span>
+                          <span className="dim-score">Score: +{d.contribution.toFixed(3)}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {res.dimensions.negative.length > 0 && (
+                    <div className="dimension-group">
+                      <span className="dim-label">Contrasts</span>
+                      {res.dimensions.negative.map((d, i) => (
+                        <span key={i} className="dim-tag dim-neg">
+                          <span className="dim-num">Dim {d.dim}</span>
+                          <span className="dim-terms">{d.terms.slice(0, 2).join(' · ')}</span>
+                          <span className="dim-score">Score: {d.contribution.toFixed(3)}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {explanations[res.country] && (
                 <div className="country-explanation">
                   <span className="explanation-label">AI Insight</span>
                   <p>{explanations[res.country]}</p>
                 </div>
               )}
-              {!explanations[res.country] && explanationLoading && idx < 5 && (
+              {!explanations[res.country] && explanationLoading && (
                 <div className="explanation-loading">
                   <span className="loading-dot" />
                   <span className="loading-dot" />

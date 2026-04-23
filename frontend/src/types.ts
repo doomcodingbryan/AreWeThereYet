@@ -12,8 +12,20 @@ export interface CountryMetadata {
   visa_name: string;
 }
 
+export interface DimensionActivation {
+  dim: number;
+  terms: string[];
+  contribution: number;
+}
+
+export interface CountryDimensions {
+  positive: DimensionActivation[];
+  negative: DimensionActivation[];
+}
+
 export interface CountryResult {
   country: string;
   score: number;
   metadata: CountryMetadata;
+  dimensions?: CountryDimensions;
 }
