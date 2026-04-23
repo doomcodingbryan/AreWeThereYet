@@ -10,7 +10,10 @@ from models import db, Post, Country
 
 # ── AI toggle ────────────────────────────────────────────────────────────────
 USE_LLM = True
+# USE_LLM = True
 # ─────────────────────────────────────────────────────────────────────────────
+
+from llm_routes import _llm_modify_query
 
 
 def json_search(query):
@@ -66,6 +69,15 @@ def register_routes(app, search_engine=None):
 
         if not query:
             return jsonify({"error": "query is required"}), 400
+
+        if USE_LLM:
+            api_key = os.getenv("SPARK_API_KEY")
+            if api_key:
+                try:
+                    query = _llm_modify_query(api_key, query)
+                    print(f"Modified query: '{data.get('query', '')}' -> '{query}'")
+                except Exception as e:
+                    print(f"Failed to modify query: {e}")
 
         results = search_engine.search(query, top_k=top_k)
         return jsonify({"query": query, "results": results})
