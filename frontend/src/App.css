@@ -305,12 +305,71 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-/* ── LLM mode: constrain answer-box so chat gets space ────────────────────── */
+/* ── RAG explanation card ──────────────────────────────────────────────────── */
 
-.llm-mode #answer-box {
-  max-height: 250px;
-  overflow-y: auto;
-  flex-shrink: 0;
+.rag-explanation {
+  width: min(900px, calc(100vw - 2rem));
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  background: #111d34;
+  border: 1px solid #2a4a7a;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rag-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #5b8fff;
+}
+
+.rag-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: #c8d8f5;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ── Per-card AI explanation ───────────────────────────────────────────────── */
+
+.country-explanation {
+  border-top: 1px solid #2a4062;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.explanation-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #5b8fff;
+}
+
+.country-explanation p {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #c2d4f5;
+}
+
+.explanation-loading {
+  border-top: 1px solid #2a4062;
+  padding-top: 0.85rem;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .control-bar {

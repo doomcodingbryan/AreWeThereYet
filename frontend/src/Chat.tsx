@@ -1,12 +1,18 @@
 /**
  * Chat component — only rendered when USE_LLM = True in routes.py.
  *
- * Shows a message history and a chat input bar at the bottom.
- * When the backend returns a search_term event, it calls onSearchTerm
- * to update the search bar and results above.
+ * RAG pipeline:
+ *   1. User sends message
+ *   2. Backend LLM modifies the query for IR → emits `search_term`
+ *   3. Backend runs IR (search_engine) → emits `ir_results`
+ *   4. Backend streams LLM answer grounded in retrieved docs → emits `content`
+ *
+ * `onSearchTerm` updates the search bar with the LLM-modified query.
+ * `onResults` updates the country cards with the IR-retrieved results.
  */
 import { useState, useRef, useEffect } from 'react'
 import SearchIcon from './assets/mag.png'
+import { CountryResult } from './types'
 
 interface Message {
   text: string
@@ -15,9 +21,10 @@ interface Message {
 
 interface ChatProps {
   onSearchTerm: (term: string) => void
+  onResults: (results: CountryResult[]) => void
 }
 
-function Chat({ onSearchTerm }: ChatProps): JSX.Element {
+function Chat({ onSearchTerm, onResults }: ChatProps): JSX.Element {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
@@ -68,13 +75,19 @@ function Chat({ onSearchTerm }: ChatProps): JSX.Element {
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
+              // Step 2: LLM-modified query → update search bar
               if (data.search_term !== undefined) {
                 onSearchTerm(data.search_term)
+              }
+              // Step 3: IR results → update country cards directly (no second API call)
+              if (data.ir_results !== undefined) {
+                onResults(data.ir_results)
               }
               if (data.error) {
                 setMessages(prev => [...prev.slice(0, -1), { text: 'Error: ' + data.error, isUser: false }])
                 return
               }
+              // Step 4: streaming LLM answer
               if (data.content !== undefined) {
                 assistantText += data.content
                 setMessages(prev => [...prev.slice(0, -1), { text: assistantText, isUser: false }])

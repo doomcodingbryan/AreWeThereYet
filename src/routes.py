@@ -9,8 +9,7 @@ from flask import send_from_directory, request, jsonify
 from models import db, Post, Country
 
 # ── AI toggle ────────────────────────────────────────────────────────────────
-USE_LLM = False
-# USE_LLM = True
+USE_LLM = True
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -73,4 +72,4 @@ def register_routes(app, search_engine=None):
 
     if USE_LLM:
         from llm_routes import register_chat_route
-        register_chat_route(app, json_search)
+        register_chat_route(app, json_search, search_engine=search_engine)
