@@ -92,10 +92,10 @@ function App(): JSX.Element {
   const [regionFilter, setRegionFilter] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'match' | 'cost' | 'safety'>('match')
   const [selected, setSelected] = useState<CountryResult | null>(null)
-  const [explanations, setExplanations] = useState<Record<string, string>>({})
-  const [explanationLoading, setExplanationLoading] = useState<boolean>(false)
-  const [explanationRateLimited, setExplanationRateLimited] = useState<boolean>(false)
-  const explainAbortRef = useRef<AbortController | null>(null)
+  const [synthesis, setSynthesis] = useState<string>('')
+  const [synthesisLoading, setSynthesisLoading] = useState<boolean>(false)
+  const [synthesisRateLimited, setSynthesisRateLimited] = useState<boolean>(false)
+  const synthesisAbortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     fetch('/api/config')
@@ -111,16 +111,16 @@ function App(): JSX.Element {
       })
   }, [])
 
-  const fetchExplanations = async (query: string, results: CountryResult[]): Promise<void> => {
-    if (explainAbortRef.current) explainAbortRef.current.abort()
+  const fetchSynthesis = async (query: string, results: CountryResult[]): Promise<void> => {
+    if (synthesisAbortRef.current) synthesisAbortRef.current.abort()
     const ctrl = new AbortController()
-    explainAbortRef.current = ctrl
-    setExplanations({})
-    setExplanationRateLimited(false)
-    setExplanationLoading(true)
+    synthesisAbortRef.current = ctrl
+    setSynthesis('')
+    setSynthesisRateLimited(false)
+    setSynthesisLoading(true)
 
     try {
-      const response = await fetch('/api/explain', {
+      const response = await fetch('/api/synthesize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, countries: results }),
@@ -142,12 +142,8 @@ function App(): JSX.Element {
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.slice(6))
-              if (data.country && data.explanation) {
-                setExplanations(prev => ({ ...prev, [data.country]: data.explanation }))
-              }
-              if (data.error === 'rate_limited') {
-                setExplanationRateLimited(true)
-              }
+              if (data.content) setSynthesis(prev => prev + data.content)
+              if (data.error === 'rate_limited') setSynthesisRateLimited(true)
             } catch { /* ignore malformed */ }
           }
         }
@@ -155,21 +151,21 @@ function App(): JSX.Element {
     } catch (e) {
       if ((e as Error).name !== 'AbortError') console.error(e)
     } finally {
-      setExplanationLoading(false)
+      setSynthesisLoading(false)
     }
   }
 
   const handleSearch = async (value: string): Promise<void> => {
     setSearchTerm(value)
     setError('')
-    if (explainAbortRef.current) explainAbortRef.current.abort()
+    if (synthesisAbortRef.current) synthesisAbortRef.current.abort()
 
     if (value.trim() === '') {
       setResults([])
       setSearchedQuery('')
       setInterpretedQuery('')
-      setExplanations({})
-      setExplanationLoading(false)
+      setSynthesis('')
+      setSynthesisLoading(false)
       setLoading(false)
       return
     }
@@ -198,7 +194,7 @@ function App(): JSX.Element {
       const fetched = data.results || []
       setResults(fetched)
       if (useLlm && fetched.length) {
-        fetchExplanations(transformed, fetched)
+        fetchSynthesis(transformed, fetched)
       }
     } catch {
       setApiConnected(false)
@@ -327,8 +323,22 @@ function App(): JSX.Element {
       {!!searchedQuery && (
         <div className="ai-query-overview">
           <span className="overview-label">AI Overview</span>
-          <p>You searched for: <strong>{searchedQuery}</strong></p>
-          <p>AI interpreted this as: <strong>{interpretedQuery || searchedQuery}</strong></p>
+          {synthesisRateLimited ? (
+            <p className="synthesis-rate-limited">AI overview unavailable — hourly token limit reached.</p>
+          ) : synthesis ? (
+            <p className="synthesis-text">{synthesis}</p>
+          ) : synthesisLoading ? (
+            <p className="synthesis-loading">
+              <span className="loading-dot" />
+              <span className="loading-dot" />
+              <span className="loading-dot" />
+            </p>
+          ) : (
+            <p>You searched for: <strong>{searchedQuery}</strong></p>
+          )}
+          {!!interpretedQuery && interpretedQuery !== searchedQuery && (
+            <p className="synthesis-query-hint">IR query: <em>{interpretedQuery}</em></p>
+          )}
         </div>
       )}
 
@@ -355,12 +365,6 @@ function App(): JSX.Element {
             </select>
           </label>
         </div>
-      )}
-
-      {explanationRateLimited && (
-        <p className="explanation-rate-limited-banner">
-          AI insights unavailable, hourly token limit reached. Dimension tags still work. Try again later.
-        </p>
       )}
 
       {loading && (
@@ -462,21 +466,6 @@ function App(): JSX.Element {
               </div>
 
               <LatentDimensionChart dimensions={res.dimensions} />
-
-
-              {explanations[res.country] && (
-                <div className="country-explanation">
-                  <span className="explanation-label">AI Insight</span>
-                  <p>{explanations[res.country]}</p>
-                </div>
-              )}
-              {!explanations[res.country] && explanationLoading && (
-                <div className="explanation-loading">
-                  <span className="loading-dot" />
-                  <span className="loading-dot" />
-                  <span className="loading-dot" />
-                </div>
-              )}
             </div>
           )
         })}

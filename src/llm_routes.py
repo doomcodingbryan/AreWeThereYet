@@ -21,6 +21,8 @@ SPARK_ENDPOINT = "https://4300spark.infosci.cornell.edu/api/chat"
 
 # In-memory cache: (query, frozenset of country names) → {country: explanation}
 _explanation_cache: dict = {}
+# Cache for collective synthesis responses
+_synthesis_cache: dict = {}
 
 
 def _spark_call(api_key, messages, stream=False):
@@ -219,6 +221,93 @@ def register_chat_route(app, _json_search, search_engine=None):
                         yield f"data: {json.dumps({'country': country_name, 'explanation': explanation})}\n\n"
             except Exception as e:
                 logger.error(f"Batch explanation error: {e}")
+                if "429" in str(e):
+                    yield f"data: {json.dumps({'error': 'rate_limited'})}\n\n"
+
+        return Response(
+            stream_with_context(generate()),
+            mimetype="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
+
+    @app.route("/api/synthesize", methods=["POST"])
+    def synthesize():
+        from models import Post, Country as CountryModel
+
+        data = request.get_json() or {}
+        query = (data.get("query") or "").strip()
+        countries = data.get("countries", [])
+
+        if not query or not countries:
+            return jsonify({"error": "query and countries required"}), 400
+
+        api_key = os.getenv("SPARK_API_KEY")
+        if not api_key:
+            return jsonify({"error": "API_KEY not set"}), 500
+
+        def generate():
+            cache_key = (query.lower().strip(), frozenset(c.get("country", "") for c in countries))
+            if cache_key in _synthesis_cache:
+                yield f"data: {json.dumps({'content': _synthesis_cache[cache_key]})}\n\n"
+                return
+
+            blocks = []
+            for entry in countries[:7]:
+                country_name = entry.get("country", "")
+                score = entry.get("score", 0)
+                posts = (
+                    Post.query
+                    .join(Post.countries)
+                    .filter(CountryModel.name == country_name)
+                    .order_by(Post.score.desc())
+                    .limit(2)
+                    .all()
+                )
+                if not posts:
+                    continue
+                post_text = "\n".join(
+                    f"  - {p.title}: {(p.body or '')[:300]}" for p in posts
+                )
+                blocks.append(f"Country: {country_name} ({round(score * 100)}% match)\n{post_text}")
+
+            if not blocks:
+                return
+
+            all_context = "\n\n---\n\n".join(blocks)
+            country_list = ", ".join(
+                c.get("country", "") for c in countries[:7] if c.get("country")
+            )
+
+            messages = [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a country relocation expert. Using the Reddit posts provided from multiple countries, "
+                        "write a single cohesive 4-5 sentence response to the user's query. "
+                        "Synthesize insights across all retrieved countries — compare and contrast them, "
+                        "highlight what makes each stand out for this query, and give an overall recommendation. "
+                        "Cite specific themes or details from the posts. "
+                        "Write as one flowing paragraph, not separate country-by-country sections."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Query: \"{query}\"\n\n"
+                        f"Retrieved countries (ranked by match score): {country_list}\n\n"
+                        f"Reddit posts:\n\n{all_context}"
+                    ),
+                },
+            ]
+
+            accumulated = []
+            try:
+                for chunk in _spark_stream_response(api_key, messages):
+                    accumulated.append(chunk)
+                    yield f"data: {json.dumps({'content': chunk})}\n\n"
+                _synthesis_cache[cache_key] = "".join(accumulated)
+            except Exception as e:
+                logger.error(f"Synthesis error: {e}")
                 if "429" in str(e):
                     yield f"data: {json.dumps({'error': 'rate_limited'})}\n\n"
 
