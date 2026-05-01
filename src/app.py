@@ -74,7 +74,14 @@ def init_db():
                             raw_countries = ast.literal_eval(raw_countries)
                         except (ValueError, SyntaxError):
                             raw_countries = []
-                    for country_name in raw_countries:
+                    _ALIASES = {
+                        "USA": "United States",
+                        "UK": "United Kingdom",
+                        "UAE": "United Arab Emirates",
+                        "Dubai": "United Arab Emirates",
+                    }
+                    for raw_name in raw_countries:
+                        country_name = _ALIASES.get(raw_name, raw_name)
                         if country_name in country_cache:
                             country = country_cache[country_name]
                         else:
