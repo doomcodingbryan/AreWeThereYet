@@ -2,6 +2,10 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import './App.css'
 import SearchIcon from './assets/mag.png'
 import { CountryResult } from './types'
+import GlobeComponent from './GlobeComponent'
+import { BackgroundGradientGlow } from './components/ui/background-gradient-glow'
+import { Button } from './components/ui/button'
+import { ArrowRight } from 'lucide-react'
 
 interface LatentPoint {
   dim: number
@@ -70,14 +74,6 @@ function LatentDimensionChart({ dimensions }: { dimensions?: LatentDimensions })
   )
 }
 
-const SUGGESTED_CATEGORIES = [
-  { label: 'Tech Hubs', query: 'strong tech jobs, startup scene, and good public transit' },
-  { label: 'Beach Living', query: 'warm beach lifestyle with safety and good healthcare' },
-  { label: 'Family Friendly', query: 'safe family friendly country with quality schools and parks' },
-  { label: 'Budget Friendly', query: 'affordable country with low cost of living and stable economy' },
-  { label: 'Digital Nomad', query: 'digital nomad friendly with good internet and visa options' },
-  { label: 'Nature + Outdoors', query: 'mountains hiking clean air and outdoor lifestyle' },
-]
 
 function App(): JSX.Element {
   const [useLlm, setUseLlm] = useState<boolean | null>(null)
@@ -87,10 +83,9 @@ function App(): JSX.Element {
   const [interpretedQuery, setInterpretedQuery] = useState<string>('')
   const [results, setResults] = useState<CountryResult[]>([])
   const [useSvd, setUseSvd] = useState<boolean>(true)
+  const [globeCollapsed, setGlobeCollapsed] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
-  const [regionFilter, setRegionFilter] = useState<string>('all')
-  const [sortBy, setSortBy] = useState<'match' | 'cost' | 'safety'>('match')
   const [selected, setSelected] = useState<CountryResult | null>(null)
   const [synthesis, setSynthesis] = useState<string>('')
   const [synthesisLoading, setSynthesisLoading] = useState<boolean>(false)
@@ -193,6 +188,7 @@ function App(): JSX.Element {
       setInterpretedQuery(transformed)
       const fetched = data.results || []
       setResults(fetched)
+      setGlobeCollapsed(true)
       if (useLlm && fetched.length) {
         fetchSynthesis(transformed, fetched)
       }
@@ -205,33 +201,9 @@ function App(): JSX.Element {
     }
   }
 
-  const regions = useMemo(() => {
-    const vals = new Set<string>()
-    results.forEach((r) => {
-      if (r.metadata.region) vals.add(r.metadata.region)
-    })
-    return ['all', ...Array.from(vals).sort()]
-  }, [results])
-
   const displayedResults = useMemo(() => {
-    const filtered = results.filter((r) => (
-      regionFilter === 'all' || r.metadata.region === regionFilter
-    ))
-    const numeric = (value: string): number => {
-      const parsed = Number(value)
-      return Number.isNaN(parsed) ? 0 : parsed
-    }
-    filtered.sort((a, b) => {
-      if (sortBy === 'cost') {
-        return numeric(a.metadata.cost_of_living_index) - numeric(b.metadata.cost_of_living_index)
-      }
-      if (sortBy === 'safety') {
-        return numeric(b.metadata.safety_index) - numeric(a.metadata.safety_index)
-      }
-      return b.score - a.score
-    })
-    return filtered
-  }, [results, regionFilter, sortBy])
+    return [...results].sort((a, b) => b.score - a.score)
+  }, [results])
 
   const getPercent = (value: string): number => {
     const n = Number(value)
@@ -247,72 +219,87 @@ function App(): JSX.Element {
   if (useLlm === null) return <></>
 
   return (
+    <BackgroundGradientGlow>
     <div className="full-body-container">
 
-      {/* Search bar */}
-      <div className="top-text">
-        <div className="google-colors">
-          <h1 id="google-4">Are</h1>
-          <h1 id="google-3">We</h1>
-          <h1 id="google-0-1">There</h1>
-          <h1 id="google-0-2">Yet?</h1>
-        </div>
-        <h2 className="subheader">Find your true home</h2>
-
-        <div
-          className="input-box"
-          onClick={() => document.getElementById('search-input')?.focus()}
+      {/* Hero — full viewport */}
+      <div className="hero-section">
+        <h1 className="hero-title">AreWeThereYet</h1>
+        <Button
+          className="group hero-cta-btn"
+          onClick={() => document.getElementById('search-section')?.scrollIntoView({ behavior: 'smooth' })}
         >
-          <img src={SearchIcon} alt="search" />
-          <input
-            id="search-input"
-            placeholder="Describe what you're looking for (e.g. warm beach, good transit)..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
+          Ready to move?
+          <ArrowRight
+            className="-me-1 ms-2 opacity-60 transition-transform group-hover:translate-x-0.5"
+            size={16}
+            strokeWidth={2}
+            aria-hidden="true"
           />
-          <button
-            type="button"
-            className="search-submit-btn"
-            onClick={() => handleSearch(searchTerm)}
-          >Search</button>
-        </div>
+        </Button>
+      </div>
 
-        <div className="suggested-categories">
-          <p className="suggested-title">Suggested categories</p>
-          <div className="category-chip-row">
-            {SUGGESTED_CATEGORIES.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                className="category-chip"
-                onClick={() => handleSearch(item.query)}
-              >
-                {item.label}
-              </button>
-            ))}
+      {/* Search — below the fold */}
+      <div id="search-section" className="search-section">
+        <div className="search-card">
+          <p className="search-card-label">Imagine your perfect home:</p>
+          <p className="search-card-hint">Describe what you're looking for in a country such as lifestyle, climate, cost of living, and more</p>
+          <div
+            className="input-box"
+            onClick={() => document.getElementById('search-input')?.focus()}
+          >
+            <img src={SearchIcon} alt="search" />
+            <input
+              id="search-input"
+              placeholder="e.g. warm weather, low cost of living, safe for families..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchTerm)}
+            />
+            <button
+              type="button"
+              className="search-submit-btn"
+              onClick={() => handleSearch(searchTerm)}
+            >Search</button>
           </div>
-        </div>
-        <div className="svd-toggle-wrap" role="group" aria-label="Ranking mode">
-          <span className="svd-toggle-label">Ranking mode</span>
-          <div className="svd-toggle">
+
+          <div className="retrieval-filters">
+            <span className="retrieval-label">Retrieval method:</span>
             <button
               type="button"
-              className={`svd-toggle-option ${!useSvd ? 'active' : ''}`}
+              className={`retrieval-btn${!useSvd ? ' active' : ''}`}
               onClick={() => setUseSvd(false)}
-            >
-              TF-IDF only
-            </button>
+            >TF-IDF</button>
             <button
               type="button"
-              className={`svd-toggle-option ${useSvd ? 'active' : ''}`}
+              className={`retrieval-btn${useSvd ? ' active' : ''}`}
               onClick={() => setUseSvd(true)}
-            >
-              TF-IDF + SVD
-            </button>
+            >TF-IDF + SVD</button>
           </div>
         </div>
       </div>
+
+      {/* Large globe — slides up when results arrive */}
+      {!!results.length && (
+        <div className="globe-results-section">
+          <p className="matches-to-label">matches to: <span className="matches-to-query">{searchedQuery}</span></p>
+          <div className={`globe-card${globeCollapsed ? ' globe-card--collapsed' : ''}`}>
+            <div className="globe-card-header">
+              <span className="globe-card-title">Globe view</span>
+              <button
+                type="button"
+                className="globe-toggle-btn"
+                onClick={() => setGlobeCollapsed(c => !c)}
+              >
+                {globeCollapsed ? 'View globe' : 'Minimize'}
+              </button>
+            </div>
+            <div className={`globe-body${globeCollapsed ? ' globe-body--collapsed' : ''}`}>
+              <GlobeComponent results={results} size={Math.min(window.innerWidth * 0.75, 700)} />
+            </div>
+          </div>
+        </div>
+      )}
 
       {!apiConnected && (
         <div className="api-warning">
@@ -342,30 +329,6 @@ function App(): JSX.Element {
         </div>
       )}
 
-      {/* Controls */}
-      {!!results.length && (
-        <div className="control-bar">
-          <label>
-            Region
-            <select value={regionFilter} onChange={(e) => setRegionFilter(e.target.value)}>
-              {regions.map((region) => (
-                <option key={region} value={region}>
-                  {region === 'all' ? 'All regions' : region}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label>
-            Sort by
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'match' | 'cost' | 'safety')}>
-              <option value="match">Match</option>
-              <option value="cost">Cost (low to high)</option>
-              <option value="safety">Safety (high to low)</option>
-            </select>
-          </label>
-        </div>
-      )}
 
       {loading && (
         <div className="search-loading" role="status" aria-live="polite">
@@ -512,6 +475,7 @@ function App(): JSX.Element {
       )}
 
     </div>
+    </BackgroundGradientGlow>
   )
 }
 
